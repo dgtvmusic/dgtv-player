@@ -371,3 +371,92 @@ h3{margin:0;font-size:25px;color:#fff}
   .program-card span{font-size:14px}
   .visualizer{height:44px}
 }
+@media (max-width: 768px){
+
+  .app-shell{
+    padding:14px 10px;
+    width:100%;
+  }
+
+  .hero{
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  h1{
+    font-size:40px;
+  }
+
+  .player-card{
+    grid-template-columns:1fr;
+    padding:14px;
+    gap:16px;
+    border-radius:22px;
+  }
+
+  .cover-wrap{
+    width:100%;
+    min-height:auto;
+  }
+
+  .cover{
+    width:100%;
+    height:auto;
+    min-height:auto;
+    aspect-ratio:1/1;
+    object-fit:cover;
+  }
+
+  h2{
+    font-size:34px;
+    line-height:1;
+  }
+
+  .description{
+    font-size:15px;
+  }
+
+  .controls{
+    align-items:center;
+  }
+
+  .play-btn{
+    width:64px;
+    height:64px;
+    font-size:26px;
+  }
+
+  .action-row{
+    grid-template-columns:1fr;
+  }
+
+  .section-title{
+    display:block;
+  }
+
+  #search{
+    width:100%;
+    margin-top:12px;
+  }
+
+  .program-grid{
+    grid-template-columns:1fr;
+  }
+
+  .program-card{
+    min-height:86px;
+  }
+
+  .program-card img{
+    width:82px;
+    height:62px;
+  }
+
+  .program-card strong{
+    font-size:17px;
+  }
+
+  .program-card span{
+    font-size:14px;
+  }
+}
