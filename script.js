@@ -1,1 +1,168 @@
-const els={cover:document.getElementById('cover'),category:document.getElementById('category'),title:document.getElementById('title'),speaker:document.getElementById('speaker'),description:document.getElementById('description'),audio:document.getElementById('audio'),playBtn:document.getElementById('playBtn'),progress:document.getElementById('progress'),currentTime:document.getElementById('currentTime'),duration:document.getElementById('duration'),grid:document.getElementById('programGrid'),search:document.getElementById('search'),playerCard:document.getElementById('playerCard'),whatsappBtn:document.getElementById('whatsappBtn'),shareBtn:document.getElementById('shareBtn')};let programs=[],current=0;function fmt(t){if(!isFinite(t))return'00:00';const m=Math.floor(t/60),s=Math.floor(t%60);return`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}function loadProgram(i,autoplay=false){current=i;const p=programs[i];els.cover.src=p.cover;els.cover.alt=p.title;els.category.textContent=p.category||'DG TV';els.title.textContent=p.title;els.speaker.textContent=p.speaker;els.description.textContent=p.description;els.audio.src=p.audio;els.progress.value=0;els.currentTime.textContent='00:00';els.duration.textContent='00:00';els.whatsappBtn.href=p.whatsapp||'https://wa.me/390000000000';document.querySelectorAll('.program-card').forEach((c,idx)=>c.classList.toggle('active',idx===i));if(autoplay){els.audio.play().catch(()=>{})}}function render(list=programs){els.grid.innerHTML='';list.forEach((p)=>{const idx=programs.indexOf(p);const card=document.createElement('button');card.className='program-card';card.type='button';card.innerHTML=`<img src="${p.cover}" alt="${p.title}"><div class="program-text"><strong>${p.title}</strong><span>${p.speaker}</span></div>`;card.addEventListener('click',()=>loadProgram(idx,false));els.grid.appendChild(card)});document.querySelectorAll('.program-card').forEach((c,idx)=>c.classList.toggle('active',idx===current))}fetch('data/programs.json').then(r=>r.json()).then(data=>{programs=data;render();loadProgram(0,false)}).catch(()=>{els.description.textContent='Impossibile caricare i programmi. Controlla data/programs.json';});els.playBtn.addEventListener('click',()=>{if(els.audio.paused){els.audio.play()}else{els.audio.pause()}});els.audio.addEventListener('play',()=>{els.playBtn.textContent='❚❚';els.playerCard.classList.add('playing')});els.audio.addEventListener('pause',()=>{els.playBtn.textContent='▶';els.playerCard.classList.remove('playing')});els.audio.addEventListener('loadedmetadata',()=>{els.duration.textContent=fmt(els.audio.duration)});els.audio.addEventListener('timeupdate',()=>{if(els.audio.duration){els.progress.value=(els.audio.currentTime/els.audio.duration)*100;els.currentTime.textContent=fmt(els.audio.currentTime)}});els.progress.addEventListener('input',()=>{if(els.audio.duration)els.audio.currentTime=(els.progress.value/100)*els.audio.duration});els.search.addEventListener('input',()=>{const q=els.search.value.toLowerCase().trim();render(programs.filter(p=>`${p.title} ${p.speaker} ${p.category}`.toLowerCase().includes(q)))});els.shareBtn.addEventListener('click',async()=>{const p=programs[current];const shareData={title:p.title,text:`Ascolta ${p.title} su DG TV Music Live Radio`,url:location.href};if(navigator.share){await navigator.share(shareData).catch(()=>{})}else{navigator.clipboard.writeText(location.href);els.shareBtn.textContent='Link copiato';setTimeout(()=>els.shareBtn.textContent='Condividi',1500)}});
+const els = {
+  card: document.getElementById('playerCard'),
+  cover: document.getElementById('cover'),
+  category: document.getElementById('category'),
+  title: document.getElementById('title'),
+  speaker: document.getElementById('speaker'),
+  description: document.getElementById('description'),
+  audio: document.getElementById('audio'),
+  playBtn: document.getElementById('playBtn'),
+  seek: document.getElementById('seek'),
+  currentTime: document.getElementById('currentTime'),
+  duration: document.getElementById('duration'),
+  whatsappBtn: document.getElementById('whatsappBtn'),
+  shareBtn: document.getElementById('shareBtn'),
+  siteBtn: document.getElementById('siteBtn'),
+  grid: document.getElementById('programGrid'),
+  search: document.getElementById('search')
+};
+
+let programs = [];
+let currentProgram = null;
+
+function formatTime(seconds){
+  if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function safeUrl(url, fallback = '#'){
+  return url && typeof url === 'string' ? url : fallback;
+}
+
+function setProgram(program, autoplay = false){
+  currentProgram = program;
+  els.cover.src = program.cover || 'images/demo-cover.jpg';
+  els.cover.alt = `Copertina ${program.title || 'programma'}`;
+  els.category.textContent = program.category || 'DG TV';
+  els.title.textContent = program.title || 'Programma';
+  els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
+  els.description.textContent = program.description || '';
+  els.audio.src = safeUrl(program.audio, '');
+  els.seek.value = 0;
+  els.currentTime.textContent = '00:00';
+  els.duration.textContent = '00:00';
+  els.playBtn.textContent = '▶';
+  els.card.classList.remove('playing');
+  els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/');
+  document.querySelectorAll('.program-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.title === program.title);
+  });
+  if (autoplay && program.audio) {
+    els.audio.play().catch(() => {});
+  }
+}
+
+function makeCard(program){
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'program-card';
+  card.dataset.title = program.title || '';
+
+  const img = document.createElement('img');
+  img.src = program.cover || 'images/demo-cover.jpg';
+  img.alt = program.title || 'Programma';
+
+  const text = document.createElement('div');
+  const title = document.createElement('strong');
+  title.textContent = program.title || 'Programma';
+  const speaker = document.createElement('span');
+  speaker.textContent = program.speaker || 'DG TV';
+
+  text.append(title, speaker);
+  card.append(img, text);
+  card.addEventListener('click', () => setProgram(program, false));
+  return card;
+}
+
+function renderPrograms(list){
+  els.grid.innerHTML = '';
+  if (!list.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = 'Nessun programma trovato.';
+    els.grid.appendChild(empty);
+    return;
+  }
+  list.forEach(program => els.grid.appendChild(makeCard(program)));
+  if (currentProgram) {
+    document.querySelectorAll('.program-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.title === currentProgram.title);
+    });
+  }
+}
+
+els.playBtn.addEventListener('click', () => {
+  if (!els.audio.src) return;
+  if (els.audio.paused) {
+    els.audio.play().catch(() => {});
+  } else {
+    els.audio.pause();
+  }
+});
+
+els.audio.addEventListener('play', () => {
+  els.playBtn.textContent = '❚❚';
+  els.card.classList.add('playing');
+});
+
+els.audio.addEventListener('pause', () => {
+  els.playBtn.textContent = '▶';
+  els.card.classList.remove('playing');
+});
+
+els.audio.addEventListener('loadedmetadata', () => {
+  els.duration.textContent = formatTime(els.audio.duration);
+});
+
+els.audio.addEventListener('timeupdate', () => {
+  if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
+    els.seek.value = (els.audio.currentTime / els.audio.duration) * 100;
+    els.currentTime.textContent = formatTime(els.audio.currentTime);
+    els.duration.textContent = formatTime(els.audio.duration);
+  }
+});
+
+els.seek.addEventListener('input', () => {
+  if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
+    els.audio.currentTime = (Number(els.seek.value) / 100) * els.audio.duration;
+  }
+});
+
+els.search.addEventListener('input', () => {
+  const q = els.search.value.trim().toLowerCase();
+  const filtered = programs.filter(p =>
+    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`.toLowerCase().includes(q)
+  );
+  renderPrograms(filtered);
+});
+
+els.shareBtn.addEventListener('click', async () => {
+  const title = currentProgram ? `${currentProgram.title} - DG TV Music Live Radio` : 'DG TV Music Live Radio';
+  const url = window.location.href;
+  if (navigator.share) {
+    try { await navigator.share({ title, url }); } catch(e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(url);
+      els.shareBtn.textContent = 'Link copiato';
+      setTimeout(() => els.shareBtn.textContent = 'Condividi', 1600);
+    } catch(e) {}
+  }
+});
+
+async function init(){
+  try {
+    const response = await fetch('data/programs.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('programs.json non trovato');
+    programs = await response.json();
+    renderPrograms(programs);
+    if (programs.length) setProgram(programs[0], false);
+  } catch (err) {
+    els.grid.innerHTML = `<div class="empty-state">Errore nel caricamento dei programmi. Controlla data/programs.json.</div>`;
+    console.error(err);
+  }
+}
+
+init();

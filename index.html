@@ -9,7 +9,7 @@
 <body>
   <main class="app-shell">
     <header class="hero">
-      <div class="brand-mark">DG<span>TV</span></div>
+      <div class="brand-mark" aria-hidden="true">DG<span>TV</span></div>
       <div>
         <p class="eyebrow">DG TV Music Live Radio</p>
         <h1>On Demand</h1>
@@ -19,33 +19,37 @@
 
     <section class="player-card" id="playerCard">
       <div class="cover-wrap">
-        <img id="cover" class="cover" src="images/retro-dance.png" alt="Copertina programma" />
-        <div class="live-pill">● ON DEMAND</div>
+        <img id="cover" class="cover" src="images/demo-cover.jpg" alt="Copertina programma" />
+        <span class="live-pill">● ON DEMAND</span>
       </div>
 
       <div class="player-info">
-        <p id="category" class="category">Dance 80/90/2000</p>
-        <h2 id="title">Retro Dance</h2>
-        <p id="speaker" class="speaker">DJ Gila & V.DP DJ</p>
-        <p id="description" class="description">Il meglio della dance anni 80, 90 e 2000.</p>
+        <p id="category" class="category">DG TV</p>
+        <h2 id="title">Seleziona un programma</h2>
+        <p id="speaker" class="speaker">DG TV Music Live Radio</p>
+        <p id="description" class="description">Scegli una scheda qui sotto e ascolta il programma on demand.</p>
 
         <div class="visualizer" aria-hidden="true">
           <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
 
-        <audio id="audio" preload="metadata"></audio>
         <div class="controls">
-          <button id="playBtn" class="play-btn" aria-label="Play pausa">▶</button>
+          <button id="playBtn" class="play-btn" aria-label="Play">▶</button>
           <div class="time-area">
-            <input id="progress" type="range" min="0" max="100" value="0" />
-            <div class="time-row"><span id="currentTime">00:00</span><span id="duration">00:00</span></div>
+            <input id="seek" type="range" min="0" max="100" value="0" />
+            <div class="time-row">
+              <span id="currentTime">00:00</span>
+              <span id="duration">00:00</span>
+            </div>
           </div>
         </div>
 
+        <audio id="audio" preload="metadata"></audio>
+
         <div class="action-row">
-          <a class="action-btn" id="siteBtn" href="https://www.dgtvmusic.com" target="_blank" rel="noopener">Sito</a>
-          <a class="action-btn whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
-          <button class="action-btn" id="shareBtn">Condividi</button>
+          <a id="siteBtn" class="action-btn" href="https://www.dgtvmusic.com" target="_blank" rel="noopener">Sito</a>
+          <a id="whatsappBtn" class="action-btn whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
+          <button id="shareBtn" class="action-btn" type="button">Condividi</button>
         </div>
       </div>
     </section>
@@ -55,9 +59,10 @@
         <h3>Tutti i programmi</h3>
         <input id="search" type="search" placeholder="Cerca programma o DJ..." />
       </div>
-      <div class="program-grid" id="programGrid"></div>
+      <div id="programGrid" class="program-grid"></div>
     </section>
   </main>
+
   <script src="script.js"></script>
 </body>
 </html>
