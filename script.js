@@ -1,93 +1,95 @@
-const audio = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const seek = document.getElementById('seek');
-const currentEl = document.getElementById('current');
-const durationEl = document.getElementById('duration');
-const coverEl = document.getElementById('cover');
-const titleEl = document.getElementById('title');
-const descEl = document.getElementById('description');
-const speakerEl = document.getElementById('speaker');
-const categoryEl = document.getElementById('category');
-const programList = document.getElementById('programList');
-const search = document.getElementById('search');
-const shareBtn = document.getElementById('shareBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const whatsappBtn = document.getElementById('whatsappBtn');
-const playerCard = document.querySelector('.player-card');
+const els = {
+  card: document.getElementById('playerCard'),
+  cover: document.getElementById('cover'),
+  category: document.getElementById('category'),
+  title: document.getElementById('title'),
+  speaker: document.getElementById('speaker'),
+  description: document.getElementById('description'),
+  audio: document.getElementById('audio'),
+  playBtn: document.getElementById('playBtn'),
+  seek: document.getElementById('seek'),
+  currentTime: document.getElementById('currentTime'),
+  duration: document.getElementById('duration'),
+  grid: document.getElementById('programGrid'),
+  search: document.getElementById('search'),
+  whatsapp: document.getElementById('whatsappBtn'),
+  share: document.getElementById('shareBtn')
+};
 
 let programs = [];
-let selected = 0;
+let selectedIndex = 0;
 
-function fmt(sec){
-  if(!isFinite(sec)) return '00:00';
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+function formatTime(sec){
+  if(!Number.isFinite(sec)) return '00:00';
+  const m = Math.floor(sec / 60).toString().padStart(2,'0');
+  const s = Math.floor(sec % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
 }
 
-async function loadPrograms(){
-  try{
-    const res = await fetch('data/programs.json');
-    programs = await res.json();
-  }catch(e){
-    programs = [{
-      title:'Music Night',
-      category:'On Demand',
-      description:'Le hit più belle di oggi e di sempre, selezionate da DG TV Music Live Radio.',
-      cover:'images/music-night.svg',
-      audio:'audio/music-night.mp3',
-      whatsapp:'https://wa.me/390000000000'
-    }];
-  }
-  renderPrograms(programs);
-  selectProgram(0);
+function setProgram(index, autoplay=false){
+  selectedIndex = index;
+  const p = programs[index];
+  if(!p) return;
+  els.cover.src = p.cover;
+  els.cover.alt = p.title;
+  els.category.textContent = p.category || 'DG TV';
+  els.title.textContent = p.title;
+  els.speaker.textContent = p.speaker || '';
+  els.description.textContent = p.description || '';
+  els.audio.src = p.audio;
+  els.seek.value = 0;
+  els.currentTime.textContent = '00:00';
+  els.duration.textContent = '00:00';
+  els.whatsapp.href = p.whatsapp || '#';
+  document.querySelectorAll('.program-card').forEach((c,i)=>c.classList.toggle('active', i===index));
+  if(autoplay){ els.audio.play().catch(()=>{}); }
 }
 
-function renderPrograms(list){
-  programList.innerHTML = '';
-  list.forEach((p, i) => {
-    const originalIndex = programs.indexOf(p);
-    const card = document.createElement('button');
-    card.className = `program-card ${originalIndex === selected ? 'active' : ''}`;
-    card.innerHTML = `<img src="${p.cover}" alt=""><div><strong>${p.title}</strong><span>${p.speaker || p.category || 'On Demand'}</span></div>`;
-    card.addEventListener('click', () => selectProgram(originalIndex));
-    programList.appendChild(card);
+function render(list=programs){
+  els.grid.innerHTML = '';
+  list.forEach((p)=>{
+    const realIndex = programs.indexOf(p);
+    const btn = document.createElement('button');
+    btn.className = 'program-card';
+    btn.type = 'button';
+    btn.innerHTML = `
+      <img src="${p.cover}" alt="${p.title}">
+      <div><strong>${p.title}</strong><span>${p.speaker || ''}</span><small>${p.category || ''}</small></div>
+    `;
+    btn.addEventListener('click', ()=> setProgram(realIndex, false));
+    els.grid.appendChild(btn);
   });
+  document.querySelectorAll('.program-card').forEach((c,i)=>c.classList.toggle('active', programs.indexOf(list[i])===selectedIndex));
 }
 
-function selectProgram(i){
-  selected = i;
-  const p = programs[i];
-  audio.pause();
-  audio.src = p.audio;
-  coverEl.src = p.cover;
-  titleEl.textContent = p.title;
-  descEl.textContent = p.description;
-  speakerEl.textContent = p.speaker ? p.speaker : '';
-  categoryEl.textContent = p.category || 'On Demand';
-  downloadBtn.href = p.audio;
-  whatsappBtn.href = p.whatsapp || 'https://wa.me/';
-  playBtn.textContent = '▶';
-  playerCard.classList.remove('playing');
-  renderPrograms(programs.filter(x => `${x.title} ${x.category} ${x.description}`.toLowerCase().includes(search.value.toLowerCase())));
-}
-
-playBtn.addEventListener('click', () => {
-  if(audio.paused) audio.play(); else audio.pause();
+els.playBtn.addEventListener('click', ()=>{
+  if(els.audio.paused) els.audio.play().catch(()=>{});
+  else els.audio.pause();
 });
-audio.addEventListener('play', () => { playBtn.textContent = '❚❚'; playerCard.classList.add('playing'); });
-audio.addEventListener('pause', () => { playBtn.textContent = '▶'; playerCard.classList.remove('playing'); });
-audio.addEventListener('loadedmetadata', () => durationEl.textContent = fmt(audio.duration));
-audio.addEventListener('timeupdate', () => {
-  currentEl.textContent = fmt(audio.currentTime);
-  seek.value = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+els.audio.addEventListener('play', ()=>{ els.playBtn.textContent='❚❚'; els.card.classList.add('playing'); });
+els.audio.addEventListener('pause', ()=>{ els.playBtn.textContent='▶'; els.card.classList.remove('playing'); });
+els.audio.addEventListener('loadedmetadata', ()=>{ els.duration.textContent = formatTime(els.audio.duration); });
+els.audio.addEventListener('timeupdate', ()=>{
+  els.currentTime.textContent = formatTime(els.audio.currentTime);
+  if(els.audio.duration) els.seek.value = (els.audio.currentTime / els.audio.duration) * 100;
 });
-seek.addEventListener('input', () => { if(audio.duration) audio.currentTime = (seek.value / 100) * audio.duration; });
-search.addEventListener('input', () => renderPrograms(programs.filter(p => `${p.title} ${p.category} ${p.description}`.toLowerCase().includes(search.value.toLowerCase()))));
-shareBtn.addEventListener('click', async () => {
-  const p = programs[selected];
-  const shareData = { title: p.title, text: p.description, url: window.location.href };
-  if(navigator.share) await navigator.share(shareData); else navigator.clipboard.writeText(window.location.href);
+els.seek.addEventListener('input', ()=>{
+  if(els.audio.duration) els.audio.currentTime = (els.seek.value / 100) * els.audio.duration;
+});
+els.search.addEventListener('input', ()=>{
+  const q = els.search.value.toLowerCase().trim();
+  render(programs.filter(p => [p.title,p.speaker,p.category].join(' ').toLowerCase().includes(q)));
+});
+els.share.addEventListener('click', async ()=>{
+  const p = programs[selectedIndex];
+  const data = {title:p?.title || 'DG TV On Demand', text:'Ascolta su DG TV Music Live Radio', url:location.href};
+  if(navigator.share) await navigator.share(data).catch(()=>{});
+  else navigator.clipboard?.writeText(location.href);
 });
 
-loadPrograms();
+fetch('data/programs.json')
+  .then(r => r.json())
+  .then(data => { programs = data; render(); setProgram(0); })
+  .catch(() => {
+    els.description.textContent = 'Errore: non trovo data/programs.json. Controlla che la cartella data e il file programs.json siano presenti.';
+  });
