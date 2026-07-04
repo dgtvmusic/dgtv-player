@@ -33,22 +33,27 @@ function safeUrl(url, fallback = '#'){
 
 function setProgram(program, autoplay = false){
   currentProgram = program;
+
   els.cover.src = program.cover || 'images/demo-cover.jpg';
   els.cover.alt = `Copertina ${program.title || 'programma'}`;
   els.category.textContent = program.category || 'DG TV';
   els.title.textContent = program.title || 'Programma';
   els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
   els.description.textContent = program.description || '';
+
   els.audio.src = safeUrl(program.audio, '');
   els.seek.value = 0;
   els.currentTime.textContent = '00:00';
   els.duration.textContent = '00:00';
   els.playBtn.textContent = '▶';
   els.card.classList.remove('playing');
-  els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/');
+
+  els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
+
   document.querySelectorAll('.program-card').forEach(card => {
     card.classList.toggle('active', card.dataset.title === program.title);
   });
+
   if (autoplay && program.audio) {
     els.audio.play().catch(() => {});
   }
@@ -65,19 +70,24 @@ function makeCard(program){
   img.alt = program.title || 'Programma';
 
   const text = document.createElement('div');
+
   const title = document.createElement('strong');
   title.textContent = program.title || 'Programma';
+
   const speaker = document.createElement('span');
   speaker.textContent = program.speaker || 'DG TV';
 
   text.append(title, speaker);
   card.append(img, text);
+
   card.addEventListener('click', () => setProgram(program, false));
+
   return card;
 }
 
 function renderPrograms(list){
   els.grid.innerHTML = '';
+
   if (!list.length) {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
@@ -85,7 +95,9 @@ function renderPrograms(list){
     els.grid.appendChild(empty);
     return;
   }
+
   list.forEach(program => els.grid.appendChild(makeCard(program)));
+
   if (currentProgram) {
     document.querySelectorAll('.program-card').forEach(card => {
       card.classList.toggle('active', card.dataset.title === currentProgram.title);
@@ -95,6 +107,7 @@ function renderPrograms(list){
 
 els.playBtn.addEventListener('click', () => {
   if (!els.audio.src) return;
+
   if (els.audio.paused) {
     els.audio.play().catch(() => {});
   } else {
@@ -108,6 +121,11 @@ els.audio.addEventListener('play', () => {
 });
 
 els.audio.addEventListener('pause', () => {
+  els.playBtn.textContent = '▶';
+  els.card.classList.remove('playing');
+});
+
+els.audio.addEventListener('ended', () => {
   els.playBtn.textContent = '▶';
   els.card.classList.remove('playing');
 });
@@ -132,35 +150,61 @@ els.seek.addEventListener('input', () => {
 
 els.search.addEventListener('input', () => {
   const q = els.search.value.trim().toLowerCase();
+
   const filtered = programs.filter(p =>
-    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`.toLowerCase().includes(q)
+    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`
+      .toLowerCase()
+      .includes(q)
   );
+
   renderPrograms(filtered);
 });
 
+els.siteBtn.textContent = 'Ascolta la diretta';
+els.siteBtn.addEventListener('click', () => {
+  window.open('https://www.dgtvmusic.com', '_blank');
+});
+
 els.shareBtn.addEventListener('click', async () => {
-  const title = currentProgram ? `${currentProgram.title} - DG TV Music Live Radio` : 'DG TV Music Live Radio';
-  const url = window.location.href;
+  const title = currentProgram
+    ? `${currentProgram.title} - DG TV Music Live Radio`
+    : 'DG TV Music Live Radio';
+
+  const url = 'https://www.dgtvmusic.com/on-demand';
+
   if (navigator.share) {
-    try { await navigator.share({ title, url }); } catch(e) {}
+    try {
+      await navigator.share({ title, url });
+    } catch (e) {}
   } else {
     try {
       await navigator.clipboard.writeText(url);
       els.shareBtn.textContent = 'Link copiato';
       setTimeout(() => els.shareBtn.textContent = 'Condividi', 1600);
-    } catch(e) {}
+    } catch (e) {}
   }
 });
 
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('programs.json non trovato');
+
+    if (!response.ok) {
+      throw new Error('programs.json non trovato');
+    }
+
     programs = await response.json();
     renderPrograms(programs);
-    if (programs.length) setProgram(programs[0], false);
+
+    if (programs.length) {
+      setProgram(programs[0], false);
+    }
   } catch (err) {
-    els.grid.innerHTML = `<div class="empty-state">Errore nel caricamento dei programmi. Controlla data/programs.json.</div>`;
+    els.grid.innerHTML = `
+      <div class="empty-state">
+        Errore nel caricamento dei programmi. Controlla data/programs.json.
+      </div>
+    `;
     console.error(err);
   }
 }
