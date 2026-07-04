@@ -186,16 +186,10 @@ els.siteBtn.addEventListener('click', () => {
   window.open('https://www.dgtvmusic.com', '_blank');
 });
 
-els.shareBtn.addEventListener('click', async () => {
-  const url = 'https://www.dgtvmusic.com/on-demand';
-
-  try {
-    await navigator.clipboard.writeText(url);
-    alert('Link copiato negli appunti!');
-  } catch (e) {
-    prompt('Copia questo link:', url);
-  }
+els.shareBtn.addEventListener('click', () => {
+  window.open('https://www.dgtvmusic.com/on-demand', '_blank');
 });
+
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
