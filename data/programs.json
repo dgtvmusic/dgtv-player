@@ -3,90 +3,90 @@
     "title": "Retro Dance",
     "speaker": "DJ Gila & V.DP DJ",
     "category": "Dance 80/90/2000",
-    "description": "Il meglio della dance anni 80, 90 e 2000: energia, vinile e grandi ricordi in stile DG TV.",
+    "description": "Il meglio della dance anni 80, 90 e 2000.",
     "cover": "images/retro-dance.png",
-    "audio":"https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/retro-dance/retro-dance.mp3",    
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/retro-dance/retro-dance.mp3",
     "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Music Night",
     "speaker": "Lady Dany",
     "category": "Pop & Hits",
-    "description": "Le hit più belle di oggi e di sempre, selezionate da Lady Dany per la notte di DG TV.",
+    "description": "Le hit più belle di oggi e di sempre.",
     "cover": "images/music-night.jpg",
-    "audio": "audio/music-night.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/music-night/music-night.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Super Sound",
     "speaker": "Marco Edelvais",
     "category": "Super Sound",
-    "description": "Un viaggio sonoro tra grandi successi, ritmo e selezioni curate da Marco Edelvais.",
+    "description": "Il meglio della musica selezionata da Marco Edelvais.",
     "cover": "images/super-sound.jpg",
-    "audio": "audio/super-sound.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/super-sound/super-sound.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Spazio Sm!le",
     "speaker": "Smile Fra",
     "category": "Entertainment",
-    "description": "Musica, leggerezza e intrattenimento: lo spazio più allegro e positivo della radio.",
+    "description": "Musica e intrattenimento.",
     "cover": "images/spazio-smile.png",
-    "audio": "audio/spazio-smile.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/spazio-smile/spazio-smile.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "From Disco And Nudisco",
     "speaker": "Zayra DJ",
     "category": "Disco / Nu Disco",
-    "description": "Groove, eleganza e sonorità disco moderne selezionate da Zayra DJ.",
+    "description": "Disco e Nu Disco.",
     "cover": "images/from-disco-and-nudisco.png",
-    "audio": "audio/from-disco-and-nudisco.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/from-disco-and-nudisco/from-disco-and-nudisco.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Party People In The House",
     "speaker": "DJ Max",
     "category": "House",
-    "description": "House, ritmo e atmosfera da party con DJ Max.",
+    "description": "House Music.",
     "cover": "images/party-people-in-the-house.png",
-    "audio": "audio/party-people-in-the-house.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/party-people-in-the-house/party-people-in-the-house.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Euro Dance House",
     "speaker": "Daniele Rizzo DJ",
     "category": "Euro Dance",
-    "description": "Energia Euro Dance e House in una selezione potente e coinvolgente.",
+    "description": "Euro Dance & House.",
     "cover": "images/euro-dance-house.png",
-    "audio": "audio/euro-dance-house.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/euro-dance-house/euro-dance-house.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "Jackin and Funky",
     "speaker": "DJ Claudio Simoni",
     "category": "Jackin / Funky",
-    "description": "Groove jackin, funky vibes e sonorità club selezionate da DJ Claudio Simoni.",
+    "description": "Jackin & Funky.",
     "cover": "images/jackin-and-funky.png",
-    "audio": "audio/jackin-and-funky.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/jackin-and-funky/jackin-and-funky.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "House Session",
     "speaker": "DJ Bartolo Fiorillo",
-    "category": "House Selection",
-    "description": "Una sessione house elegante, ritmata e dal sound adulto.",
+    "category": "House",
+    "description": "House Session.",
     "cover": "images/house-session.png",
-    "audio": "audio/house-session.mp3",
-    "whatsapp": "https://wa.me/393208026411"  
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/house-session/house-session.mp3",
+    "whatsapp": "https://wa.me/393208026411"
   },
   {
     "title": "My House",
     "speaker": "DJ Chiavistelli",
-    "category": "House Selection",
-    "description": "La selezione house di DJ Chiavistelli: ritmo, classe e suono da club.",
+    "category": "House",
+    "description": "My House.",
     "cover": "images/my-house.png",
-    "audio": "audio/my-house.mp3",
+    "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/my-house/my-house.mp3",
     "whatsapp": "https://wa.me/393208026411"
   }
-]
+]]
