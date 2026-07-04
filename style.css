@@ -272,7 +272,10 @@ input[type=range]::-webkit-slider-thumb{
   color:#fff;
   position:relative;
 }
-
+#siteBtn::before{
+  content:"";
+  margin-right:0;
+}
 
 }
 
