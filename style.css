@@ -273,11 +273,7 @@ input[type=range]::-webkit-slider-thumb{
   position:relative;
 }
 
-#siteBtn::before{
-  content:"●";
-  color:#ff1744;
-  margin-right:8px;
-  animation:liveBlink 1s infinite;
+
 }
 
 @keyframes liveBlink{
