@@ -181,9 +181,8 @@ els.search.addEventListener('input', () => {
   renderPrograms(filtered);
 });
 
-els.siteBtn.innerHTML = 'LIVE RADIO';
-els.siteBtn.addEventListener('click', () => {
-  window.open('https://www.dgtvmusic.com', '_blank');
+els.siteBtn.innerHTML = '🔴 LIVE RADIO';
+els.siteBtn.addEventListener(() => {  window.open('https://www.dgtvmusic.com', '_blank');
 });
 
 els.shareBtn.addEventListener('click', async () => {
