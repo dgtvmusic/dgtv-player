@@ -194,15 +194,19 @@ els.shareBtn.addEventListener('click', async () => {
   const url = 'https://www.dgtvmusic.com/on-demand';
 
   if (navigator.share) {
-    try {
-      await navigator.share({ title, url });
-    } catch (e) {}
-  } else {
-    try {
-      await navigator.clipboard.writeText(url);
-      els.shareBtn.textContent = 'Link copiato';
-      setTimeout(() => els.shareBtn.textContent = 'Condividi', 1600);
-    } catch (e) {}
+  try {
+    await navigator.share({
+      title,
+      text: 'Ascolta DG TV Music Live Radio',
+      url
+    });
+  } catch (e) {}
+} else {
+  try {
+    await navigator.clipboard.writeText(url);
+    alert('Link copiato negli appunti!');
+  } catch (e) {
+    prompt('Copia questo link:', url);
   }
 });
 
