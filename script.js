@@ -182,7 +182,6 @@ els.search.addEventListener('input', () => {
 });
 
 els.siteBtn.innerHTML = 'LIVE RADIO';
-
 els.siteBtn.addEventListener('click', () => {
   window.open('https://www.dgtvmusic.com', '_blank');
 });
