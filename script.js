@@ -187,21 +187,8 @@ els.siteBtn.addEventListener('click', () => {
 });
 
 els.shareBtn.addEventListener('click', async () => {
-  const title = currentProgram
-    ? `${currentProgram.title} - DG TV Music Live Radio`
-    : 'DG TV Music Live Radio';
-
   const url = 'https://www.dgtvmusic.com/on-demand';
 
-  if (navigator.share) {
-  try {
-    await navigator.share({
-      title,
-      text: 'Ascolta DG TV Music Live Radio',
-      url
-    });
-  } catch (e) {}
-} else {
   try {
     await navigator.clipboard.writeText(url);
     alert('Link copiato negli appunti!');
@@ -209,7 +196,6 @@ els.shareBtn.addEventListener('click', async () => {
     prompt('Copia questo link:', url);
   }
 });
-
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
