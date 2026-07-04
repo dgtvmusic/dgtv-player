@@ -467,3 +467,57 @@ h3{
     height:60px;
   }
 }
+/* ===== DG TV PREMIUM UPDATE ===== */
+
+.player-card{
+  transition:opacity .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+
+.player-card.playing{
+  box-shadow:0 0 42px rgba(255,43,214,.55), inset 0 0 45px rgba(0,183,255,.08);
+}
+
+.player-card.changing{
+  opacity:.45;
+  transform:scale(.995);
+}
+
+input[type=range]{
+  --progress:0%;
+  height:8px;
+  appearance:none;
+  -webkit-appearance:none;
+  border-radius:999px;
+  background:linear-gradient(90deg, var(--pink) 0%, var(--pink) var(--progress), rgba(255,255,255,.8) var(--progress), rgba(255,255,255,.8) 100%);
+}
+
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#fff;
+  border:3px solid #ff33cc;
+  box-shadow:0 0 16px rgba(255,43,214,.8);
+}
+
+.playing .play-btn{
+  box-shadow:0 0 32px rgba(255,43,214,.9);
+}
+
+.program-card.active{
+  border:2px solid #ff33cc !important;
+  box-shadow:0 0 25px rgba(255,0,255,.45);
+  transform:scale(1.02);
+}
+
+#siteBtn::before{
+  content:"●";
+  display:inline-block;
+  color:#ff1744;
+  font-size:13px;
+  margin-right:8px;
+  vertical-align:middle;
+  animation:liveBlink 1s infinite;
+}
