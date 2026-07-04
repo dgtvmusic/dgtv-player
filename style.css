@@ -466,3 +466,36 @@ h3{margin:0;font-size:25px;color:#fff}
     object-fit:contain;
     display:block;
 }
+/* Migliorie DG TV */
+#siteBtn{
+  border-color:#ff2bd6;
+  background:linear-gradient(135deg, rgba(255,43,214,.22), rgba(255,0,80,.18));
+  color:#fff;
+  position:relative;
+}
+
+#siteBtn::before{
+  content:"●";
+  color:#ff1744;
+  margin-right:8px;
+  animation:liveBlink 1s infinite;
+}
+
+@keyframes liveBlink{
+  0%,100%{opacity:1}
+  50%{opacity:.25}
+}
+
+.program-card.active{
+  border-color:#ff2bd6 !important;
+  box-shadow:0 0 22px rgba(255,43,214,.45);
+  background:linear-gradient(135deg, rgba(255,43,214,.18), rgba(17,24,39,.92));
+}
+
+.program-card.active strong{
+  color:#ffffff;
+}
+
+.program-card.active span{
+  color:#ff5be7;
+}
