@@ -19,6 +19,7 @@ const els = {
 
 let programs = [];
 let currentProgram = null;
+let currentIndex = 0;
 
 function formatTime(seconds){
   if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
@@ -31,32 +32,50 @@ function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
 
+function updateProgress(){
+  if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
+    const percent = (els.audio.currentTime / els.audio.duration) * 100;
+    els.seek.value = percent;
+    els.seek.style.setProperty('--progress', `${percent}%`);
+    els.currentTime.textContent = formatTime(els.audio.currentTime);
+    els.duration.textContent = formatTime(els.audio.duration);
+  }
+}
+
 function setProgram(program, autoplay = false){
   currentProgram = program;
+  currentIndex = programs.findIndex(p => p.title === program.title);
 
-  els.cover.src = program.cover || 'images/demo-cover.jpg';
-  els.cover.alt = `Copertina ${program.title || 'programma'}`;
-  els.category.textContent = program.category || 'DG TV';
-  els.title.textContent = program.title || 'Programma';
-  els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
-  els.description.textContent = program.description || '';
+  els.card.classList.add('changing');
 
-  els.audio.src = safeUrl(program.audio, '');
-  els.seek.value = 0;
-  els.currentTime.textContent = '00:00';
-  els.duration.textContent = '00:00';
-  els.playBtn.textContent = '▶';
-  els.card.classList.remove('playing');
+  setTimeout(() => {
+    els.cover.src = program.cover || 'images/demo-cover.jpg';
+    els.cover.alt = `Copertina ${program.title || 'programma'}`;
+    els.category.textContent = program.category || 'DG TV';
+    els.title.textContent = program.title || 'Programma';
+    els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
+    els.description.textContent = program.description || '';
 
-  els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
+    els.audio.src = safeUrl(program.audio, '');
+    els.seek.value = 0;
+    els.seek.style.setProperty('--progress', '0%');
+    els.currentTime.textContent = '00:00';
+    els.duration.textContent = '00:00';
+    els.playBtn.textContent = '▶';
+    els.card.classList.remove('playing');
 
-  document.querySelectorAll('.program-card').forEach(card => {
-    card.classList.toggle('active', card.dataset.title === program.title);
-  });
+    els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
 
-  if (autoplay && program.audio) {
-    els.audio.play().catch(() => {});
-  }
+    document.querySelectorAll('.program-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.title === program.title);
+    });
+
+    els.card.classList.remove('changing');
+
+    if (autoplay && program.audio) {
+      els.audio.play().catch(() => {});
+    }
+  }, 180);
 }
 
 function makeCard(program){
@@ -105,6 +124,12 @@ function renderPrograms(list){
   }
 }
 
+function playNextProgram(){
+  if (!programs.length) return;
+  const nextIndex = currentIndex >= programs.length - 1 ? 0 : currentIndex + 1;
+  setProgram(programs[nextIndex], true);
+}
+
 els.playBtn.addEventListener('click', () => {
   if (!els.audio.src) return;
 
@@ -128,23 +153,19 @@ els.audio.addEventListener('pause', () => {
 els.audio.addEventListener('ended', () => {
   els.playBtn.textContent = '▶';
   els.card.classList.remove('playing');
+  playNextProgram();
 });
 
 els.audio.addEventListener('loadedmetadata', () => {
   els.duration.textContent = formatTime(els.audio.duration);
 });
 
-els.audio.addEventListener('timeupdate', () => {
-  if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
-    els.seek.value = (els.audio.currentTime / els.audio.duration) * 100;
-    els.currentTime.textContent = formatTime(els.audio.currentTime);
-    els.duration.textContent = formatTime(els.audio.duration);
-  }
-});
+els.audio.addEventListener('timeupdate', updateProgress);
 
 els.seek.addEventListener('input', () => {
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     els.audio.currentTime = (Number(els.seek.value) / 100) * els.audio.duration;
+    updateProgress();
   }
 });
 
@@ -160,7 +181,7 @@ els.search.addEventListener('input', () => {
   renderPrograms(filtered);
 });
 
-els.siteBtn.textContent = 'Ascolta la diretta';
+els.siteBtn.innerHTML = 'LIVE RADIO';
 els.siteBtn.addEventListener('click', () => {
   window.open('https://www.dgtvmusic.com', '_blank');
 });
