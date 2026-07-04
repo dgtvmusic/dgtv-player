@@ -187,7 +187,7 @@ els.siteBtn.addEventListener('click', () => {
 });
 
 els.shareBtn.addEventListener('click', () => {
-  window.open('https://www.dgtvmusic.com/on-demand', '_blank');
+  window.open('https://dgtvmusic.github.io/dgtv-player/', '_blank');
 });
 
 async function init(){
