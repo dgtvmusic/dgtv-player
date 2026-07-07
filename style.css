@@ -13,18 +13,28 @@
 
 *{box-sizing:border-box}
 
-body{
+html,body{
   margin:0;
-  min-height:100vh;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden!important;
+  overflow-y:visible!important;
   background:#000;
   color:var(--text);
   font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  height:auto!important;
 }
 
 .app-shell{
   width:min(1100px,100%);
   margin:0 auto;
   padding:16px 12px 24px;
+  overflow:visible!important;
+  height:auto!important;
 }
 
 .hero{
@@ -316,6 +326,7 @@ h3{
   cursor:pointer;
   transition:.25s ease;
   text-align:left;
+  touch-action:manipulation;
 }
 
 .program-card:hover{
@@ -361,8 +372,16 @@ h3{
 }
 
 @media(max-width:780px){
+  html,body{
+    overflow-y:visible!important;
+    height:auto!important;
+  }
+
   .app-shell{
     padding:12px 8px 20px;
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
   }
 
   .hero{
