@@ -56,8 +56,8 @@ function setProgram(program, autoplay = false){
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
-    els.audio.src = safeUrl(program.audio, '');
-    els.seek.value = 0;
+    const audioUrl = safeUrl(program.audio, '');
+    els.audio.src = audioUrl ? `${audioUrl}?v=${Date.now()}` : '';    els.seek.value = 0;
     els.seek.style.setProperty('--progress', '0%');
     els.currentTime.textContent = '00:00';
     els.duration.textContent = '00:00';
