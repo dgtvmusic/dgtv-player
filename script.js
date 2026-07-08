@@ -105,7 +105,12 @@ function makeCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => setProgram(program, false));
+  card.addEventListener('click', () => {
+    setProgram(program, false);
+    setTimeout(() => {
+      els.card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 180);
+  });
   return card;
 }
 
