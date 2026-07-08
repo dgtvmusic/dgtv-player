@@ -40,7 +40,7 @@ function escapeHtml(value){
     .replaceAll('<','&lt;')
     .replaceAll('>','&gt;')
     .replaceAll('"','&quot;')
-    .replaceAll("'",'&#039;');
+    .replaceAll("'","&#039;");
 }
 
 function updateProgress(){
@@ -53,7 +53,9 @@ function updateProgress(){
   }
 }
 
-function setProgram(program, autoplay = false, scrollTop = false){
+function setProgram(program, autoplay = false){
+  if (!program) return;
+
   currentProgram = program;
   currentIndex = programs.findIndex(p => p.title === program.title);
 
@@ -83,14 +85,10 @@ function setProgram(program, autoplay = false, scrollTop = false){
 
     els.card.classList.remove('changing');
 
-    if (scrollTop) {
-      els.card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
     if (autoplay && program.audio) {
       els.audio.play().catch(() => {});
     }
-  }, 180);
+  }, 120);
 }
 
 function makeCard(program){
@@ -107,7 +105,7 @@ function makeCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => setProgram(program, false, true));
+  card.addEventListener('click', () => setProgram(program, false));
   return card;
 }
 
@@ -125,7 +123,7 @@ function makeFeaturedCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => setProgram(program, false, false));
+  card.addEventListener('click', () => setProgram(program, false));
   return card;
 }
 
@@ -176,7 +174,7 @@ function renderPrograms(list){
 function playNextProgram(){
   if (!programs.length) return;
   const nextIndex = currentIndex >= programs.length - 1 ? 0 : currentIndex + 1;
-  setProgram(programs[nextIndex], true, false);
+  setProgram(programs[nextIndex], true);
 }
 
 els.playBtn.addEventListener('click', () => {
@@ -254,9 +252,9 @@ async function init(){
     renderPrograms(programs);
 
     if (featuredPrograms.length) {
-      setProgram(featuredPrograms[0], false, false);
+      setProgram(featuredPrograms[0], false);
     } else if (programs.length) {
-      setProgram(programs[0], false, false);
+      setProgram(programs[0], false);
     }
   } catch (err) {
     els.grid.innerHTML = `
