@@ -446,38 +446,3 @@ h3{
   .program-card{grid-template-columns:70px 1fr;min-height:70px;padding:9px}
   .program-card img{width:70px;height:52px}
 }
-
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:18px;
-  transform:translateX(-50%) translateY(20px);
-  width:min(520px,calc(100% - 28px));
-  padding:13px 16px;
-  border-radius:999px;
-  background:linear-gradient(90deg,rgba(255,0,122,.96),rgba(122,44,255,.96),rgba(0,217,255,.96));
-  color:#fff;
-  text-align:center;
-  font-weight:900;
-  font-size:14px;
-  letter-spacing:.2px;
-  box-shadow:0 0 28px rgba(255,0,122,.45);
-  opacity:0;
-  pointer-events:none;
-  z-index:9999;
-  transition:opacity .25s ease, transform .25s ease;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:780px){
-  .toast{
-    bottom:12px;
-    font-size:13px;
-    padding:12px 14px;
-  }
-}
