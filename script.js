@@ -11,15 +11,12 @@ const els = {
   currentTime: document.getElementById('currentTime'),
   duration: document.getElementById('duration'),
   whatsappBtn: document.getElementById('whatsappBtn'),
-  shareBtn: document.getElementById('shareBtn'),
-  siteBtn: document.getElementById('siteBtn'),
-  grid: document.getElementById('programGrid'),
-  search: document.getElementById('search')
+  grid: document.getElementById('featuredGrid')
 };
 
 let programs = [];
+let featuredPrograms = [];
 let currentProgram = null;
-let currentIndex = 0;
 
 function formatTime(seconds){
   if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
@@ -32,20 +29,26 @@ function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
 
+function getType(program){
+  const text = `${program.title || ''} ${program.category || ''}`.toLowerCase();
+  if (text.includes('orosc')) return '⭐ SPECIALE';
+  if (text.includes('chi c')) return '🎙 TALK';
+  if (text.includes('dance') || text.includes('dj') || text.includes('music')) return '🎧 DJ SET';
+  return '🎵 RADIO';
+}
+
 function updateProgress(){
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     const percent = (els.audio.currentTime / els.audio.duration) * 100;
     els.seek.value = percent;
-    els.seek.style.setProperty('--progress', `${percent}%`);
     els.currentTime.textContent = formatTime(els.audio.currentTime);
     els.duration.textContent = formatTime(els.audio.duration);
   }
 }
 
 function setProgram(program, autoplay = false){
+  if (!program) return;
   currentProgram = program;
-  currentIndex = programs.findIndex(p => p.title === program.title);
-
   els.card.classList.add('changing');
 
   setTimeout(() => {
@@ -54,16 +57,13 @@ function setProgram(program, autoplay = false){
     els.category.textContent = program.category || 'DG TV';
     els.title.textContent = program.title || 'Programma';
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
-    els.description.textContent = program.description || '';
-
+    els.description.textContent = program.description || 'Ascolta il programma on demand.';
     els.audio.src = safeUrl(program.audio, '');
     els.seek.value = 0;
-    els.seek.style.setProperty('--progress', '0%');
     els.currentTime.textContent = '00:00';
     els.duration.textContent = '00:00';
     els.playBtn.textContent = '▶';
     els.card.classList.remove('playing');
-
     els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
 
     document.querySelectorAll('.program-card').forEach(card => {
@@ -71,11 +71,8 @@ function setProgram(program, autoplay = false){
     });
 
     els.card.classList.remove('changing');
-
-    if (autoplay && program.audio) {
-      els.audio.play().catch(() => {});
-    }
-  }, 180);
+    if (autoplay && program.audio) els.audio.play().catch(() => {});
+  }, 170);
 }
 
 function makeCard(program){
@@ -83,85 +80,57 @@ function makeCard(program){
   card.type = 'button';
   card.className = 'program-card';
   card.dataset.title = program.title || '';
-
-  const img = document.createElement('img');
-  img.src = program.cover || 'images/demo-cover.jpg';
-  img.alt = program.title || 'Programma';
-
-  const text = document.createElement('div');
-
-  const title = document.createElement('strong');
-  title.textContent = program.title || 'Programma';
-
-  const speaker = document.createElement('span');
-  speaker.textContent = program.speaker || 'DG TV';
-
-  text.append(title, speaker);
-  card.append(img, text);
-
+  card.innerHTML = `
+    <div class="thumb">
+      <img src="${program.cover || 'images/demo-cover.jpg'}" alt="${program.title || 'Programma'}">
+      <span class="card-badge">${getType(program)}</span>
+    </div>
+    <div class="card-copy">
+      <strong>${program.title || 'Programma'}</strong>
+      <span>${program.speaker || 'DG TV Music Live Radio'}</span>
+      <em class="listen">▶ Ascolta ora</em>
+    </div>`;
   card.addEventListener('click', () => setProgram(program, false));
-
   return card;
 }
 
-function renderPrograms(list){
-  els.grid.innerHTML = '';
+function pickFeatured(list){
+  const wanted = ['chi', 'retro', 'music', 'orosc'];
+  const selected = [];
+  wanted.forEach(word => {
+    const found = list.find(p => !selected.includes(p) && `${p.title || ''} ${p.category || ''}`.toLowerCase().includes(word));
+    if (found) selected.push(found);
+  });
+  list.forEach(p => { if (selected.length < 4 && !selected.includes(p)) selected.push(p); });
+  return selected.slice(0, 4);
+}
 
+function renderFeatured(list){
+  els.grid.innerHTML = '';
   if (!list.length) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.textContent = 'Nessun programma trovato.';
-    els.grid.appendChild(empty);
+    els.grid.innerHTML = '<div class="empty-state">Nessun programma trovato.</div>';
     return;
   }
-
   list.forEach(program => els.grid.appendChild(makeCard(program)));
-
-  if (currentProgram) {
-    document.querySelectorAll('.program-card').forEach(card => {
-      card.classList.toggle('active', card.dataset.title === currentProgram.title);
-    });
-  }
 }
 
 function playNextProgram(){
-  if (!programs.length) return;
-  const nextIndex = currentIndex >= programs.length - 1 ? 0 : currentIndex + 1;
-  setProgram(programs[nextIndex], true);
+  if (!featuredPrograms.length) return;
+  const currentFeaturedIndex = featuredPrograms.findIndex(p => p.title === currentProgram?.title);
+  const next = currentFeaturedIndex >= featuredPrograms.length - 1 ? 0 : currentFeaturedIndex + 1;
+  setProgram(featuredPrograms[next], true);
 }
 
 els.playBtn.addEventListener('click', () => {
   if (!els.audio.src) return;
-
-  if (els.audio.paused) {
-    els.audio.play().catch(() => {});
-  } else {
-    els.audio.pause();
-  }
+  if (els.audio.paused) els.audio.play().catch(() => {});
+  else els.audio.pause();
 });
-
-els.audio.addEventListener('play', () => {
-  els.playBtn.textContent = '❚❚';
-  els.card.classList.add('playing');
-});
-
-els.audio.addEventListener('pause', () => {
-  els.playBtn.textContent = '▶';
-  els.card.classList.remove('playing');
-});
-
-els.audio.addEventListener('ended', () => {
-  els.playBtn.textContent = '▶';
-  els.card.classList.remove('playing');
-  playNextProgram();
-});
-
-els.audio.addEventListener('loadedmetadata', () => {
-  els.duration.textContent = formatTime(els.audio.duration);
-});
-
+els.audio.addEventListener('play', () => { els.playBtn.textContent = '❚❚'; els.card.classList.add('playing'); });
+els.audio.addEventListener('pause', () => { els.playBtn.textContent = '▶'; els.card.classList.remove('playing'); });
+els.audio.addEventListener('ended', playNextProgram);
+els.audio.addEventListener('loadedmetadata', () => { els.duration.textContent = formatTime(els.audio.duration); });
 els.audio.addEventListener('timeupdate', updateProgress);
-
 els.seek.addEventListener('input', () => {
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     els.audio.currentTime = (Number(els.seek.value) / 100) * els.audio.duration;
@@ -169,49 +138,17 @@ els.seek.addEventListener('input', () => {
   }
 });
 
-els.search.addEventListener('input', () => {
-  const q = els.search.value.trim().toLowerCase();
-
-  const filtered = programs.filter(p =>
-    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`
-      .toLowerCase()
-      .includes(q)
-  );
-
-  renderPrograms(filtered);
-});
-
-els.siteBtn.innerHTML = 'LIVE RADIO';
-els.siteBtn.addEventListener('click', () => {
-  window.open('https://www.dgtvmusic.com', '_blank');
-});
-
-els.shareBtn.addEventListener('click', () => {
-  window.open('https://dgtvmusic.github.io/dgtv-player/', '_blank');
-});
-
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
-
-    if (!response.ok) {
-      throw new Error('programs.json non trovato');
-    }
-
+    if (!response.ok) throw new Error('programs.json non trovato');
     programs = await response.json();
-    renderPrograms(programs);
-
-    if (programs.length) {
-      setProgram(programs[0], false);
-    }
+    featuredPrograms = pickFeatured(programs);
+    renderFeatured(featuredPrograms);
+    if (featuredPrograms.length) setProgram(featuredPrograms[0], false);
   } catch (err) {
-    els.grid.innerHTML = `
-      <div class="empty-state">
-        Errore nel caricamento dei programmi. Controlla data/programs.json.
-      </div>
-    `;
+    els.grid.innerHTML = '<div class="empty-state">Errore nel caricamento dei programmi. Controlla data/programs.json.</div>';
     console.error(err);
   }
 }
-
 init();
