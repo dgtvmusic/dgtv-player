@@ -15,7 +15,8 @@ const els = {
   siteBtn: document.getElementById('siteBtn'),
   featuredGrid: document.getElementById('featuredGrid'),
   grid: document.getElementById('programGrid'),
-  search: document.getElementById('search')
+  search: document.getElementById('search'),
+  toast: document.getElementById('toast')
 };
 
 let programs = [];
@@ -53,12 +54,18 @@ function updateProgress(){
   }
 }
 
-function scrollToPlayer(){
-  const y = els.card.getBoundingClientRect().top + window.pageYOffset - 12;
-  window.scrollTo({ top: y, behavior: 'smooth' });
+let toastTimer = null;
+
+function showToast(){
+  if (!els.toast) return;
+  els.toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    els.toast.classList.remove('show');
+  }, 2200);
 }
 
-function setProgram(program, autoplay = false){
+function setProgram(program, autoplay = false, notify = false){
   if (!program) return;
 
   currentProgram = program;
@@ -90,6 +97,10 @@ function setProgram(program, autoplay = false){
 
     els.card.classList.remove('changing');
 
+    if (notify) {
+      showToast();
+    }
+
     if (autoplay && program.audio) {
       els.audio.play().catch(() => {});
     }
@@ -110,10 +121,7 @@ function makeCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => {
-    setProgram(program, false);
-    setTimeout(scrollToPlayer, 180);
-  });
+  card.addEventListener('click', () => setProgram(program, false, true));
   return card;
 }
 
@@ -131,7 +139,7 @@ function makeFeaturedCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => setProgram(program, false));
+  card.addEventListener('click', () => setProgram(program, false, true));
   return card;
 }
 
