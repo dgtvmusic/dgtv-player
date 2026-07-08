@@ -11,12 +11,15 @@ const els = {
   currentTime: document.getElementById('currentTime'),
   duration: document.getElementById('duration'),
   whatsappBtn: document.getElementById('whatsappBtn'),
-  grid: document.getElementById('featuredGrid')
+  featuredGrid: document.getElementById('featuredGrid'),
+  programGrid: document.getElementById('programGrid'),
+  search: document.getElementById('search')
 };
 
 let programs = [];
 let featuredPrograms = [];
 let currentProgram = null;
+let currentIndex = 0;
 
 function formatTime(seconds){
   if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
@@ -27,6 +30,15 @@ function formatTime(seconds){
 
 function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
+}
+
+function escapeHtml(value){
+  return String(value || '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
 }
 
 function getType(program){
@@ -48,7 +60,9 @@ function updateProgress(){
 
 function setProgram(program, autoplay = false){
   if (!program) return;
+
   currentProgram = program;
+  currentIndex = programs.findIndex(p => p.title === program.title);
   els.card.classList.add('changing');
 
   setTimeout(() => {
@@ -66,71 +80,137 @@ function setProgram(program, autoplay = false){
     els.card.classList.remove('playing');
     els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
 
-    document.querySelectorAll('.program-card').forEach(card => {
+    document.querySelectorAll('[data-title]').forEach(card => {
       card.classList.toggle('active', card.dataset.title === program.title);
     });
 
     els.card.classList.remove('changing');
-    if (autoplay && program.audio) els.audio.play().catch(() => {});
-  }, 170);
-}
 
-function makeCard(program){
-  const card = document.createElement('button');
-  card.type = 'button';
-  card.className = 'program-card';
-  card.dataset.title = program.title || '';
-  card.innerHTML = `
-    <div class="thumb">
-      <img src="${program.cover || 'images/demo-cover.jpg'}" alt="${program.title || 'Programma'}">
-      <span class="card-badge">${getType(program)}</span>
-    </div>
-    <div class="card-copy">
-      <strong>${program.title || 'Programma'}</strong>
-      <span>${program.speaker || 'DG TV Music Live Radio'}</span>
-      <em class="listen">▶ Ascolta ora</em>
-    </div>`;
-  card.addEventListener('click', () => setProgram(program, false));
-  return card;
+    if (autoplay && program.audio) {
+      els.audio.play().catch(() => {});
+    }
+  }, 160);
 }
 
 function pickFeatured(list){
   const wanted = ['chi', 'retro', 'music', 'orosc'];
   const selected = [];
+
   wanted.forEach(word => {
-    const found = list.find(p => !selected.includes(p) && `${p.title || ''} ${p.category || ''}`.toLowerCase().includes(word));
+    const found = list.find(p =>
+      !selected.includes(p) &&
+      `${p.title || ''} ${p.category || ''}`.toLowerCase().includes(word)
+    );
     if (found) selected.push(found);
   });
-  list.forEach(p => { if (selected.length < 4 && !selected.includes(p)) selected.push(p); });
+
+  list.forEach(p => {
+    if (selected.length < 4 && !selected.includes(p)) selected.push(p);
+  });
+
   return selected.slice(0, 4);
 }
 
-function renderFeatured(list){
-  els.grid.innerHTML = '';
+function makeFeaturedCard(program){
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'featured-card';
+  card.dataset.title = program.title || '';
+
+  card.innerHTML = `
+    <div class="thumb">
+      <img src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}" alt="${escapeHtml(program.title || 'Programma')}">
+      <span class="card-badge">${getType(program)}</span>
+    </div>
+    <div class="card-copy">
+      <strong>${escapeHtml(program.title || 'Programma')}</strong>
+      <span>${escapeHtml(program.speaker || 'DG TV Music Live Radio')}</span>
+      <em class="listen">▶ Ascolta ora</em>
+    </div>
+  `;
+
+  card.addEventListener('click', () => setProgram(program, false));
+  return card;
+}
+
+function makeProgramCard(program){
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'program-card';
+  card.dataset.title = program.title || '';
+
+  card.innerHTML = `
+    <img src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}" alt="${escapeHtml(program.title || 'Programma')}">
+    <div>
+      <strong>${escapeHtml(program.title || 'Programma')}</strong>
+      <span>${escapeHtml(program.speaker || 'DG TV Music Live Radio')}</span>
+    </div>
+  `;
+
+  card.addEventListener('click', () => {
+    setProgram(program, false);
+    els.card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  return card;
+}
+
+function renderFeatured(){
+  els.featuredGrid.innerHTML = '';
+  featuredPrograms.forEach(program => els.featuredGrid.appendChild(makeFeaturedCard(program)));
+}
+
+function renderAll(list){
+  els.programGrid.innerHTML = '';
+
   if (!list.length) {
-    els.grid.innerHTML = '<div class="empty-state">Nessun programma trovato.</div>';
+    els.programGrid.innerHTML = '<div class="empty-state">Nessun programma trovato.</div>';
     return;
   }
-  list.forEach(program => els.grid.appendChild(makeCard(program)));
+
+  list.forEach(program => els.programGrid.appendChild(makeProgramCard(program)));
+
+  if (currentProgram) {
+    document.querySelectorAll('[data-title]').forEach(card => {
+      card.classList.toggle('active', card.dataset.title === currentProgram.title);
+    });
+  }
 }
 
 function playNextProgram(){
-  if (!featuredPrograms.length) return;
-  const currentFeaturedIndex = featuredPrograms.findIndex(p => p.title === currentProgram?.title);
-  const next = currentFeaturedIndex >= featuredPrograms.length - 1 ? 0 : currentFeaturedIndex + 1;
-  setProgram(featuredPrograms[next], true);
+  if (!programs.length) return;
+  const nextIndex = currentIndex >= programs.length - 1 ? 0 : currentIndex + 1;
+  setProgram(programs[nextIndex], true);
 }
 
 els.playBtn.addEventListener('click', () => {
   if (!els.audio.src) return;
-  if (els.audio.paused) els.audio.play().catch(() => {});
-  else els.audio.pause();
+
+  if (els.audio.paused) {
+    els.audio.play().catch(() => {});
+  } else {
+    els.audio.pause();
+  }
 });
-els.audio.addEventListener('play', () => { els.playBtn.textContent = '❚❚'; els.card.classList.add('playing'); });
-els.audio.addEventListener('pause', () => { els.playBtn.textContent = '▶'; els.card.classList.remove('playing'); });
+
+els.audio.addEventListener('play', () => {
+  els.playBtn.textContent = '❚❚';
+  els.card.classList.add('playing');
+});
+
+els.audio.addEventListener('pause', () => {
+  els.playBtn.textContent = '▶';
+  els.card.classList.remove('playing');
+});
+
 els.audio.addEventListener('ended', playNextProgram);
-els.audio.addEventListener('loadedmetadata', () => { els.duration.textContent = formatTime(els.audio.duration); });
+
+els.audio.addEventListener('loadedmetadata', () => {
+  els.duration.textContent = formatTime(els.audio.duration);
+});
+
 els.audio.addEventListener('timeupdate', updateProgress);
+
 els.seek.addEventListener('input', () => {
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     els.audio.currentTime = (Number(els.seek.value) / 100) * els.audio.duration;
@@ -138,17 +218,31 @@ els.seek.addEventListener('input', () => {
   }
 });
 
+els.search.addEventListener('input', () => {
+  const q = els.search.value.trim().toLowerCase();
+  const filtered = programs.filter(p =>
+    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`.toLowerCase().includes(q)
+  );
+  renderAll(filtered);
+});
+
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
     if (!response.ok) throw new Error('programs.json non trovato');
+
     programs = await response.json();
     featuredPrograms = pickFeatured(programs);
-    renderFeatured(featuredPrograms);
+    renderFeatured();
+    renderAll(programs);
+
     if (featuredPrograms.length) setProgram(featuredPrograms[0], false);
+    else if (programs.length) setProgram(programs[0], false);
   } catch (err) {
-    els.grid.innerHTML = '<div class="empty-state">Errore nel caricamento dei programmi. Controlla data/programs.json.</div>';
+    els.featuredGrid.innerHTML = '<div class="empty-state">Errore nel caricamento dei programmi.</div>';
+    els.programGrid.innerHTML = '<div class="empty-state">Controlla data/programs.json.</div>';
     console.error(err);
   }
 }
+
 init();
