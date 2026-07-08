@@ -13,13 +13,11 @@ const els = {
   whatsappBtn: document.getElementById('whatsappBtn'),
   shareBtn: document.getElementById('shareBtn'),
   siteBtn: document.getElementById('siteBtn'),
-  featuredGrid: document.getElementById('featuredGrid'),
   grid: document.getElementById('programGrid'),
   search: document.getElementById('search')
 };
 
 let programs = [];
-let featuredPrograms = [];
 let currentProgram = null;
 let currentIndex = 0;
 
@@ -34,15 +32,6 @@ function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
 
-function escapeHtml(value){
-  return String(value || '')
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-}
-
 function updateProgress(){
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     const percent = (els.audio.currentTime / els.audio.duration) * 100;
@@ -53,14 +42,7 @@ function updateProgress(){
   }
 }
 
-function scrollToPlayer(){
-  const y = els.card.getBoundingClientRect().top + window.pageYOffset - 12;
-  window.scrollTo({ top: y, behavior: 'smooth' });
-}
-
 function setProgram(program, autoplay = false){
-  if (!program) return;
-
   currentProgram = program;
   currentIndex = programs.findIndex(p => p.title === program.title);
 
@@ -84,7 +66,7 @@ function setProgram(program, autoplay = false){
 
     els.whatsappBtn.href = safeUrl(program.whatsapp, 'https://wa.me/393208026411');
 
-    document.querySelectorAll('[data-title]').forEach(card => {
+    document.querySelectorAll('.program-card').forEach(card => {
       card.classList.toggle('active', card.dataset.title === program.title);
     });
 
@@ -93,7 +75,7 @@ function setProgram(program, autoplay = false){
     if (autoplay && program.audio) {
       els.audio.play().catch(() => {});
     }
-  }, 120);
+  }, 180);
 }
 
 function makeCard(program){
@@ -102,61 +84,24 @@ function makeCard(program){
   card.className = 'program-card';
   card.dataset.title = program.title || '';
 
-  card.innerHTML = `
-    <img src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}" alt="${escapeHtml(program.title || 'Programma')}">
-    <div>
-      <strong>${escapeHtml(program.title || 'Programma')}</strong>
-      <span>${escapeHtml(program.speaker || 'DG TV')}</span>
-    </div>
-  `;
+  const img = document.createElement('img');
+  img.src = program.cover || 'images/demo-cover.jpg';
+  img.alt = program.title || 'Programma';
 
-  card.addEventListener('click', () => {
-    setProgram(program, false);
-    setTimeout(scrollToPlayer, 180);
-  });
-  return card;
-}
+  const text = document.createElement('div');
 
-function makeFeaturedCard(program){
-  const card = document.createElement('button');
-  card.type = 'button';
-  card.className = 'featured-card';
-  card.dataset.title = program.title || '';
+  const title = document.createElement('strong');
+  title.textContent = program.title || 'Programma';
 
-  card.innerHTML = `
-    <img src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}" alt="${escapeHtml(program.title || 'Programma')}">
-    <div>
-      <strong>${escapeHtml(program.title || 'Programma')}</strong>
-      <span>${escapeHtml(program.speaker || 'DG TV')}</span>
-    </div>
-  `;
+  const speaker = document.createElement('span');
+  speaker.textContent = program.speaker || 'DG TV';
+
+  text.append(title, speaker);
+  card.append(img, text);
 
   card.addEventListener('click', () => setProgram(program, false));
+
   return card;
-}
-
-function pickFeatured(list){
-  const wanted = ['chi', 'retro', 'music', 'orosc'];
-  const selected = [];
-
-  wanted.forEach(word => {
-    const found = list.find(p =>
-      !selected.includes(p) &&
-      `${p.title || ''} ${p.category || ''}`.toLowerCase().includes(word)
-    );
-    if (found) selected.push(found);
-  });
-
-  list.forEach(program => {
-    if (selected.length < 4 && !selected.includes(program)) selected.push(program);
-  });
-
-  return selected.slice(0, 4);
-}
-
-function renderFeatured(){
-  els.featuredGrid.innerHTML = '';
-  featuredPrograms.forEach(program => els.featuredGrid.appendChild(makeFeaturedCard(program)));
 }
 
 function renderPrograms(list){
@@ -173,7 +118,7 @@ function renderPrograms(list){
   list.forEach(program => els.grid.appendChild(makeCard(program)));
 
   if (currentProgram) {
-    document.querySelectorAll('[data-title]').forEach(card => {
+    document.querySelectorAll('.program-card').forEach(card => {
       card.classList.toggle('active', card.dataset.title === currentProgram.title);
     });
   }
@@ -254,14 +199,9 @@ async function init(){
     }
 
     programs = await response.json();
-    featuredPrograms = pickFeatured(programs);
-
-    renderFeatured();
     renderPrograms(programs);
 
-    if (featuredPrograms.length) {
-      setProgram(featuredPrograms[0], false);
-    } else if (programs.length) {
+    if (programs.length) {
       setProgram(programs[0], false);
     }
   } catch (err) {
