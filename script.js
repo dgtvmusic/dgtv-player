@@ -53,6 +53,11 @@ function updateProgress(){
   }
 }
 
+function scrollToPlayer(){
+  const y = els.card.getBoundingClientRect().top + window.pageYOffset - 12;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
 function setProgram(program, autoplay = false){
   if (!program) return;
 
@@ -107,9 +112,7 @@ function makeCard(program){
 
   card.addEventListener('click', () => {
     setProgram(program, false);
-    setTimeout(() => {
-      els.card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 180);
+    setTimeout(scrollToPlayer, 180);
   });
   return card;
 }
