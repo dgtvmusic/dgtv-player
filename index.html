@@ -9,54 +9,55 @@
 <body>
   <main class="app-shell">
     <header class="hero">
-      <img class="brand-logo" src="images/logo-dgtv.png" alt="DG TV Music Live Radio">      <div>
-        <p class="eyebrow">DG TV Music Live Radio</p>
+      <div class="brand-mark">DG<span>TV</span></div>
+      <div>
+        <p class="eyebrow">La web radio del FVG</p>
         <h1>On Demand</h1>
-        <p class="subtitle">Programmi, DJ set e speciali sempre disponibili.</p>
+        <p class="subtitle">Riascolta i programmi di DG TV Music Live Radio quando vuoi.</p>
       </div>
     </header>
 
-    <section class="player-card" id="playerCard">
+    <section class="player-card" aria-label="Player On Demand">
       <div class="cover-wrap">
-        <img id="cover" class="cover" src="images/demo-cover.jpg" alt="Copertina programma" />
-        <span class="live-pill">● ON DEMAND</span>
+        <img id="cover" class="cover" alt="Copertina programma" />
+        <div class="live-pill">● ON DEMAND</div>
       </div>
 
       <div class="player-info">
-        <p id="category" class="category">DG TV</p>
-        <h2 id="title">Seleziona un programma</h2>
-        <p id="speaker" class="speaker">DG TV Music Live Radio</p>
-        <p id="description" class="description">Scegli una scheda qui sotto e ascolta il programma on demand.</p>
+        <p id="category" class="category">Programma</p>
+        <h2 id="title">Caricamento...</h2>
+        <p id="speaker" class="speaker"></p>
+        <p id="description" class="description"></p>
 
         <div class="visualizer" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
         </div>
 
         <div class="controls">
-          <button id="playBtn" class="play-btn" aria-label="Play">▶</button>
+          <button id="playBtn" class="play-btn" aria-label="Play o pausa">▶</button>
           <div class="time-area">
-            <input id="seek" type="range" min="0" max="100" value="0" />
-            <div class="time-row">
-              <span id="currentTime">00:00</span>
-              <span id="duration">00:00</span>
-            </div>
+            <input id="seek" type="range" value="0" min="0" max="100" step="0.1" aria-label="Avanzamento audio" />
+            <div class="time-row"><span id="current">00:00</span><span id="duration">00:00</span></div>
           </div>
         </div>
 
         <audio id="audio" preload="metadata"></audio>
 
         <div class="action-row">
-          <a id="siteBtn" class="action-btn" href="https://www.dgtvmusic.com" target="_blank" rel="noopener">Sito</a>
-          <a id="whatsappBtn" class="action-btn whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
-         <a id="shareBtn" class="action-btn" href="https://dgtvmusic.github.io/dgtv-player/index.html" target="_blank" rel="noopener">Condividi</a>      </div>
+          <button id="shareBtn" class="action-btn">Condividi</button>
+          <a id="downloadBtn" class="action-btn" download>Scarica</a>
+          <a id="whatsappBtn" class="action-btn whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
     </section>
 
     <section class="programs-section">
       <div class="section-title">
         <h3>Tutti i programmi</h3>
-        <input id="search" type="search" placeholder="Cerca programma o DJ..." />
+        <input id="search" type="search" placeholder="Cerca programma..." />
       </div>
-      <div id="programGrid" class="program-grid"></div>
+      <div id="programList" class="program-grid"></div>
     </section>
   </main>
 
