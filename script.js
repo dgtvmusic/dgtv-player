@@ -84,6 +84,12 @@ function setProgram(program, autoplay = false){
       card.classList.toggle('active', card.dataset.title === program.title);
     });
 
+    const activeCard = document.querySelector('.program-card.active');
+    if (activeCard && els.grid) {
+      const left = activeCard.offsetLeft - (els.grid.clientWidth / 2) + (activeCard.clientWidth / 2);
+      els.grid.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+    }
+
     els.card.classList.remove('changing');
 
     if (autoplay && program.audio) {
