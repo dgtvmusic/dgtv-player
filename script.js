@@ -29,6 +29,30 @@ function formatTime(seconds){
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
+
+function fitTitleToOneLine(){
+  const title = els.title;
+  if (!title) return;
+
+  title.style.whiteSpace = 'nowrap';
+  title.style.overflow = 'hidden';
+  title.style.textOverflow = 'ellipsis';
+
+  if (window.innerWidth <= 780) {
+    title.style.fontSize = window.innerWidth <= 420 ? '23px' : '24px';
+  } else {
+    title.style.fontSize = '';
+  }
+
+  requestAnimationFrame(() => {
+    let size = parseFloat(window.getComputedStyle(title).fontSize);
+    while (title.scrollWidth > title.clientWidth && size > 18) {
+      size -= 1;
+      title.style.fontSize = `${size}px`;
+    }
+  });
+}
+
 function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
@@ -65,6 +89,7 @@ function setProgram(program, autoplay = false){
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.category.textContent = program.category || 'DG TV';
     els.title.textContent = program.title || 'Programma';
+    fitTitleToOneLine();
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
@@ -197,6 +222,8 @@ els.siteBtn.addEventListener('click', () => {
 els.shareBtn.addEventListener('click', () => {
   window.open('https://dgtvmusic.github.io/dgtv-player/', '_blank');
 });
+
+window.addEventListener('resize', fitTitleToOneLine);
 
 async function init(){
   try {
