@@ -88,6 +88,7 @@ function setProgram(program, autoplay = false){
       els.grid.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
     }
 
+    removeDgtvLabel();
     els.card.classList.remove('changing');
 
     if (autoplay && program.audio) {
@@ -230,13 +231,22 @@ init();
 
 
 function removeDgtvLabel(){
-  document.querySelectorAll('.eyebrow, .program-brand, .brand, #brand, #programBrand').forEach(el => el.remove());
-  document.querySelectorAll('.player-info > p, .player-info > span, .player-info > div').forEach(el => {
+  document.querySelectorAll('.eyebrow, .program-brand, .brand, #brand, #programBrand, .category, #category').forEach(el => {
     const txt = (el.textContent || '').trim().replace(/\s+/g, ' ').toUpperCase();
-    if (txt === 'DG TV' || txt === 'D G T V') el.remove();
+    if (!txt || txt === 'DG TV' || txt === 'DGTV' || txt === 'D G T V') el.remove();
+  });
+
+  document.querySelectorAll('body *').forEach(el => {
+    const txt = (el.textContent || '').trim().replace(/\s+/g, ' ').toUpperCase();
+    const hasChildren = el.children && el.children.length > 0;
+    if (!hasChildren && (txt === 'DG TV' || txt === 'DGTV' || txt === 'D G T V')) {
+      el.remove();
+    }
   });
 }
 
 removeDgtvLabel();
+window.addEventListener('load', removeDgtvLabel);
+setInterval(removeDgtvLabel, 500);
 const dgtvLabelObserver = new MutationObserver(removeDgtvLabel);
 dgtvLabelObserver.observe(document.body, { childList: true, subtree: true });
