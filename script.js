@@ -63,6 +63,14 @@ function setProgram(program, autoplay = false){
     els.cover.src = program.cover || 'images/demo-cover.jpg';
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.title.textContent = program.title || 'Programma';
+
+    els.title.classList.remove('title-small','title-xsmall');
+    const len=(program.title||'').length;
+    if(len>24){
+      els.title.classList.add('title-xsmall');
+    }else if(len>18){
+      els.title.classList.add('title-small');
+    }
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
