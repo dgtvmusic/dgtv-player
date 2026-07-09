@@ -957,113 +957,124 @@ h3{
 }
 
 
-/* === MOBILE COMPATTO: player più basso, programmi visibili subito === */
+/* === FIX MOBILE: niente scritte schiacciate === */
+/* Su telefono il player torna verticale, ma molto compatto. */
 
 @media(max-width:780px){
   .player-card{
-    display:grid;
-    grid-template-columns:42% 1fr;
-    gap:10px;
-    align-items:start;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+    padding:10px !important;
+    border-radius:20px !important;
   }
 
   .cover-wrap{
-    grid-column:1;
-    grid-row:1 / span 4;
+    grid-column:auto !important;
+    grid-row:auto !important;
+    max-height:360px;
+  }
+
+  .cover,
+  #cover{
+    width:100% !important;
+    aspect-ratio:1/1 !important;
+    object-fit:cover !important;
+    display:block !important;
   }
 
   .player-info{
-    display:contents;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
   }
 
   .category,
   h2,
   .speaker,
-  .description{
-    grid-column:2;
+  .description,
+  .visualizer,
+  .controls,
+  .action-row{
+    grid-column:auto !important;
   }
 
   .category{
-    font-size:10px;
-    letter-spacing:2px;
-    margin:0 0 3px;
+    font-size:11px !important;
+    letter-spacing:2px !important;
+    margin:2px 0 3px !important;
+    white-space:normal !important;
   }
 
   h2{
-    font-size:24px;
-    line-height:.95;
-    margin:0 0 4px;
+    font-size:28px !important;
+    line-height:1 !important;
+    margin:0 0 4px !important;
+    white-space:normal !important;
+    word-break:normal !important;
   }
 
   .speaker{
-    font-size:12px;
-    line-height:1.15;
-    margin:0 0 5px;
+    font-size:14px !important;
+    line-height:1.15 !important;
+    margin:0 0 5px !important;
+    white-space:normal !important;
   }
 
   .description{
-    font-size:12px;
-    line-height:1.18;
-    margin:0;
+    font-size:13px !important;
+    line-height:1.2 !important;
+    margin:0 0 6px !important;
+    white-space:normal !important;
   }
 
   .visualizer{
-    grid-column:1 / -1;
-    height:24px;
-    margin:4px 0 6px;
+    height:28px !important;
+    margin:0 0 7px !important;
   }
-
-  .visualizer span{
-    width:5px;
-    height:12px;
-  }
-
-  .visualizer span:nth-child(2n){height:18px}
-  .visualizer span:nth-child(3n){height:23px}
-  .visualizer span:nth-child(5n){height:16px}
 
   .controls{
-    grid-column:1 / -1;
-    gap:8px;
+    display:flex !important;
+    gap:8px !important;
+    align-items:center !important;
   }
 
   .play-btn{
-    width:50px;
-    height:50px;
-    font-size:21px;
+    width:52px !important;
+    height:52px !important;
+    font-size:22px !important;
+    flex:0 0 auto !important;
   }
 
   .time-row{
-    font-size:12px;
+    font-size:12px !important;
   }
 
   .action-row{
-    grid-column:1 / -1;
-    margin-top:8px;
-    gap:6px;
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:6px !important;
+    margin-top:9px !important;
   }
 
   .action-btn{
-    min-height:40px;
-    font-size:10px;
-    padding:7px 2px;
+    min-height:40px !important;
+    font-size:10px !important;
+    padding:7px 2px !important;
+    border-radius:10px !important;
   }
 
   .programs-section{
-    margin-top:14px;
+    margin-top:15px !important;
   }
 }
 
 @media(max-width:420px){
-  .player-card{
-    grid-template-columns:40% 1fr;
+  .cover-wrap{
+    max-height:335px;
   }
 
   h2{
-    font-size:22px;
-  }
-
-  .description{
-    font-size:11.5px;
+    font-size:26px !important;
   }
 }
