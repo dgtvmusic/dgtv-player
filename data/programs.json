@@ -2,8 +2,7 @@
   {
     "title": "Retro Dance",
     "speaker": "DJ Gila & V.DP DJ",
-    "category": "Dance 80/90/2000",
-    "description": "Il meglio della dance anni 80, 90 e 2000.",
+    "description": "Dance anni '80, '90 e 2000 senza interruzioni.",
     "cover": "images/retro-dance.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/retro-dance/retro-dance.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -11,8 +10,7 @@
   {
     "title": "Music Night",
     "speaker": "Lady Dany",
-    "category": "Pop & Hits",
-    "description": "Le hit più belle di oggi e di sempre.",
+    "description": "Le migliori hit italiane e internazionali.",
     "cover": "images/music-night.jpg",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/music-night/music-night.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -20,8 +18,7 @@
   {
     "title": "Super Sound",
     "speaker": "Marco Edelvais",
-    "category": "Super Sound",
-    "description": "Il meglio della musica selezionata da Marco Edelvais.",
+    "description": "Una selezione musicale ricca di grandi successi.",
     "cover": "images/super-sound.jpg",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/super-sound/super-sound.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -29,8 +26,7 @@
   {
     "title": "Spazio Sm!le",
     "speaker": "Smile Fra",
-    "category": "Entertainment",
-    "description": "Musica e intrattenimento.",
+    "description": "Musica, intrattenimento e tanto buon umore.",
     "cover": "images/spazio-smile.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/spazio-smile/spazio-smile.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -38,8 +34,7 @@
   {
     "title": "From Disco And Nudisco",
     "speaker": "Zayra DJ",
-    "category": "Disco / Nu Disco",
-    "description": "Disco e Nu Disco.",
+    "description": "Il meglio della Disco e della Nu Disco.",
     "cover": "images/from-disco-and-nudisco.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/from-disco-and-nudisco/from-disco-and-nudisco.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -47,8 +42,7 @@
   {
     "title": "Party People In The House",
     "speaker": "DJ Max",
-    "category": "House",
-    "description": "House Music.",
+    "description": "Disco, House e grandi classici da ballare.",
     "cover": "images/party-people-in-the-house.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/party-people-in-the-house/party-people-in-the-house.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -56,8 +50,7 @@
   {
     "title": "Euro Dance House",
     "speaker": "Daniele Rizzo DJ",
-    "category": "Euro Dance",
-    "description": "Euro Dance & House.",
+    "description": "Le migliori sonorità Euro Dance & House.",
     "cover": "images/euro-dance-house.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/euro-dance-house/euro-dance-house.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -65,8 +58,7 @@
   {
     "title": "Jackin and Funky",
     "speaker": "DJ Claudio Simoni",
-    "category": "Jackin / Funky",
-    "description": "Jackin & Funky.",
+    "description": "Jackin' House, Funky e groove irresistibile.",
     "cover": "images/jackin-and-funky.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/jackin-and-funky/jackin-and-funky.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -74,8 +66,7 @@
   {
     "title": "House Session",
     "speaker": "DJ Bartolo Fiorillo",
-    "category": "House",
-    "description": "House Session.",
+    "description": "Solo il meglio della House Music.",
     "cover": "images/house-session.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/house-session/house-session.mp3",
     "whatsapp": "https://wa.me/393208026411"
@@ -83,8 +74,7 @@
   {
     "title": "My House",
     "speaker": "DJ Chiavistelli",
-    "category": "House",
-    "description": "My House.",
+    "description": "House Music selezionata e mixata da DJ Chiavistelli.",
     "cover": "images/my-house.png",
     "audio": "https://pub-0d9bf335a95641aa8f2f6c4b552588d7.r2.dev/my-house/my-house.mp3",
     "whatsapp": "https://wa.me/393208026411"
