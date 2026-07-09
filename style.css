@@ -778,40 +778,35 @@ input[type=range]::-moz-range-thumb{
   }
 }
 
-
-/* === FIX MOBILE DEFINITIVO: titoli sempre uguali su una sola riga === */
+/* === FIX DEFINITIVO MOBILE: titolo grande sempre su una sola riga === */
 #title{
-  display:block !important;
-  max-width:100% !important;
   white-space:nowrap !important;
   overflow:hidden !important;
   text-overflow:ellipsis !important;
-  line-height:.95 !important;
-  word-break:keep-all !important;
-  overflow-wrap:normal !important;
+  max-width:100% !important;
+  display:block !important;
+}
+
+.program-card strong{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  display:block !important;
 }
 
 @media(max-width:780px){
   #title{
+    font-size:clamp(18px, 6vw, 30px) !important;
+    line-height:1.02 !important;
+    letter-spacing:.5px !important;
     white-space:nowrap !important;
     overflow:hidden !important;
     text-overflow:ellipsis !important;
-    line-height:.95 !important;
-    margin-bottom:4px !important;
-  }
-
-  .program-card strong{
-    display:block !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-    line-height:1.05 !important;
-    font-size:15px !important;
   }
 }
 
 @media(max-width:420px){
-  .program-card strong{
-    font-size:13px !important;
+  #title{
+    font-size:clamp(18px, 5.8vw, 24px) !important;
   }
 }
