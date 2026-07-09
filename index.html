@@ -8,8 +8,10 @@
 </head>
 <body>
   <main class="app-shell">
-    <header class="hero">
-      <img class="brand-logo" src="images/logo-dgtv.png" alt="DG TV Music Live Radio">      <div>
+
+    <header class="hero-banner">
+      <img class="hero-logo" src="images/logo-dgtv.png" alt="DG TV Music Live Radio">
+      <div class="hero-copy">
         <p class="eyebrow">DG TV Music Live Radio</p>
         <h1>On Demand</h1>
         <p class="subtitle">Programmi, DJ set e speciali sempre disponibili.</p>
@@ -29,7 +31,8 @@
         <p id="description" class="description">Scegli una scheda qui sotto e ascolta il programma on demand.</p>
 
         <div class="visualizer" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
         </div>
 
         <div class="controls">
@@ -46,18 +49,25 @@
         <audio id="audio" preload="metadata"></audio>
 
         <div class="action-row">
-          <a id="siteBtn" class="action-btn" href="https://www.dgtvmusic.com" target="_blank" rel="noopener">Sito</a>
-          <a id="whatsappBtn" class="action-btn whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
-         <a id="shareBtn" class="action-btn" href="https://dgtvmusic.github.io/dgtv-player/index.html" target="_blank" rel="noopener">Condividi</a>      </div>
+          <a id="siteBtn" class="action-btn live" href="https://www.dgtvmusic.com" target="_blank" rel="noopener">LIVE RADIO</a>
+          <a id="whatsappBtn" class="action-btn whatsapp" href="#" target="_blank" rel="noopener">WHATSAPP</a>
+          <a id="shareBtn" class="action-btn share" href="https://dgtvmusic.github.io/dgtv-player/" target="_blank" rel="noopener">CONDIVIDI</a>
+        </div>
+      </div>
     </section>
 
     <section class="programs-section">
       <div class="section-title">
         <h3>Tutti i programmi</h3>
-        <input id="search" type="search" placeholder="Cerca programma o DJ..." />
       </div>
-      <div id="programGrid" class="program-grid"></div>
+
+      <div class="slider-wrap">
+        <button id="prevBtn" class="slider-arrow left" type="button" aria-label="Programmi precedenti">‹</button>
+        <div id="programGrid" class="program-slider"></div>
+        <button id="nextBtn" class="slider-arrow right" type="button" aria-label="Programmi successivi">›</button>
+      </div>
     </section>
+
   </main>
 
   <script src="script.js"></script>
