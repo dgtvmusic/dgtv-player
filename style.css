@@ -1227,8 +1227,27 @@ header.hero-banner.hero-app .subtitle{
 }
 
 
-/* === RESTYLING FINALE CARD PROGRAMMI - MOBILE PREMIUM === */
+/* =========================================================
+   DGTV PLAYER DEFINITIVO COMPLETO
+   Card programmi più leggibili + player stabile
+   ========================================================= */
 
+/* Titolo principale: sempre una riga, ma senza allungare il player */
+#title{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+}
+#title.title-small{
+  font-size:2.05rem !important;
+  letter-spacing:0 !important;
+}
+#title.title-xsmall{
+  font-size:1.75rem !important;
+  letter-spacing:0 !important;
+}
+
+/* Card programmi: niente ON DEMAND ripetuto, bottone ASCOLTA */
 .program-card .listen-chip{
   display:flex !important;
   align-items:center !important;
@@ -1245,6 +1264,7 @@ header.hero-banner.hero-app .subtitle{
   box-shadow:0 0 14px rgba(255,0,122,.35) !important;
 }
 
+/* Titoli card più leggibili */
 .program-card strong{
   white-space:normal !important;
   overflow:visible !important;
@@ -1261,6 +1281,7 @@ header.hero-banner.hero-app .subtitle{
   text-overflow:ellipsis !important;
 }
 
+/* Mobile: card più grandi, meno schiacciate */
 @media(max-width:780px){
   .program-slider{
     gap:12px !important;
@@ -1294,6 +1315,7 @@ header.hero-banner.hero-app .subtitle{
   }
 }
 
+/* iPhone stretti */
 @media(max-width:420px){
   .program-card{
     flex:0 0 58% !important;
