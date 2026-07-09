@@ -1078,3 +1078,24 @@ h3{
     font-size:26px !important;
   }
 }
+@media(max-width:780px){
+  .player-card{
+    grid-template-columns:1fr !important;
+  }
+
+  .player-info{
+    display:flex !important;
+  }
+
+  .cover-wrap,
+  .category,
+  h2,
+  .speaker,
+  .description,
+  .visualizer,
+  .controls,
+  .action-row{
+    grid-column:auto !important;
+    grid-row:auto !important;
+  }
+}
