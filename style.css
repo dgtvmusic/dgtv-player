@@ -1008,3 +1008,45 @@ input[type=range]::-moz-range-thumb{
   .action-btn{font-size:9px !important;}
   .program-card{flex-basis:45% !important;}
 }
+/* ===== HEADER MOBILE CENTRATO ===== */
+@media (max-width:780px){
+
+.hero-banner{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    gap:10px !important;
+    padding:8px 0 14px !important;
+}
+
+.hero-copy{
+    width:100% !important;
+    text-align:center !important;
+}
+
+.hero-logo{
+    width:82px !important;
+    height:82px !important;
+    margin:0 auto !important;
+}
+
+.eyebrow,
+h1,
+.subtitle{
+    width:100% !important;
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+}
+
+h1{
+    font-size:38px !important;
+    line-height:.95 !important;
+}
+
+.subtitle{
+    font-size:15px !important;
+}
+}
