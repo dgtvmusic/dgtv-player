@@ -1225,3 +1225,6 @@ header.hero-banner.hero-app .subtitle{
   padding:0 !important;
   overflow:hidden !important;
 }
+.category{
+  display:none !important;
+}
