@@ -1327,3 +1327,66 @@ header.hero-banner.hero-app .subtitle{
     flex:0 0 62% !important;
   }
 }
+
+
+/* =========================================================
+   PREMIUM GLOW - card attiva + pulsante ascolta più elegante
+   ========================================================= */
+
+.program-card{
+  position:relative !important;
+}
+
+.program-card.active{
+  border:2px solid #ff2bd6 !important;
+  background:linear-gradient(180deg,rgba(255,43,214,.16),rgba(0,217,255,.06)) !important;
+  box-shadow:
+    0 0 20px rgba(255,43,214,.55),
+    0 0 34px rgba(0,217,255,.20) !important;
+  transform:translateY(-3px) !important;
+}
+
+.program-card.active::after{
+  content:"IN ASCOLTO";
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:3;
+  padding:5px 7px;
+  border-radius:999px;
+  background:rgba(0,0,0,.72);
+  color:#fff;
+  border:1px solid rgba(255,43,214,.75);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.4px;
+  box-shadow:0 0 12px rgba(255,43,214,.55);
+}
+
+.program-card.active img{
+  filter:saturate(1.15) contrast(1.08) !important;
+}
+
+.program-card .listen-chip{
+  transition:transform .18s ease, filter .18s ease, box-shadow .18s ease !important;
+}
+
+.program-card:active .listen-chip,
+.program-card .listen-chip:active{
+  transform:scale(.96) !important;
+  filter:brightness(1.18) !important;
+  box-shadow:
+    0 0 20px rgba(255,0,122,.55),
+    0 0 30px rgba(0,217,255,.24) !important;
+}
+
+.program-card.active .listen-chip{
+  background:linear-gradient(90deg,#00d9ff,#7a2cff,#ff007a) !important;
+  box-shadow:
+    0 0 18px rgba(255,0,122,.55),
+    0 0 26px rgba(0,217,255,.22) !important;
+}
+
+.player-card.changing{
+  transform:scale(.995) !important;
+}
