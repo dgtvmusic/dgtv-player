@@ -1050,3 +1050,30 @@ h1{
     font-size:15px !important;
 }
 }
+/* FORZA HEADER CENTRATO MOBILE */
+@media (max-width:780px){
+  .hero-banner{
+    grid-template-columns:none !important;
+    display:block !important;
+    text-align:center !important;
+  }
+
+  .hero-logo{
+    display:block !important;
+    margin:0 auto 8px auto !important;
+  }
+
+  .hero-copy{
+    display:block !important;
+    width:100% !important;
+    text-align:center !important;
+  }
+
+  .eyebrow,
+  .hero-copy h1,
+  .hero-copy .subtitle{
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
