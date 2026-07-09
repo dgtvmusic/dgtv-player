@@ -778,15 +778,38 @@ input[type=range]::-moz-range-thumb{
   }
 }
 
+/* === FIX REALE TITOLO GRANDE PLAYER: sempre una sola riga === */
+#title{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  line-height:.95 !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+}
 
-/* Force now playing title on one line */
-.now-playing-title,
-.hero-title,
-#nowPlayingTitle,
-.program-title,
-.current-title{
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  line-height: 1 !important;
+@media(max-width:780px){
+  #title{
+    font-size:24px !important;
+    letter-spacing:.2px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+}
+
+@media(max-width:420px){
+  #title{
+    font-size:23px !important;
+  }
+}
+
+.program-card strong{
+  display:block !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
 }
