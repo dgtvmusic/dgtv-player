@@ -14,7 +14,8 @@ const els = {
   shareBtn: document.getElementById('shareBtn'),
   siteBtn: document.getElementById('siteBtn'),
   grid: document.getElementById('programGrid'),
-  search: document.getElementById('search')
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn')
 };
 
 let programs = [];
@@ -32,6 +33,15 @@ function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
 
+function escapeHtml(value){
+  return String(value || '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+}
+
 function updateProgress(){
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     const percent = (els.audio.currentTime / els.audio.duration) * 100;
@@ -43,6 +53,8 @@ function updateProgress(){
 }
 
 function setProgram(program, autoplay = false){
+  if (!program) return;
+
   currentProgram = program;
   currentIndex = programs.findIndex(p => p.title === program.title);
 
@@ -57,7 +69,9 @@ function setProgram(program, autoplay = false){
     els.description.textContent = program.description || '';
 
     const audioUrl = safeUrl(program.audio, '');
-    els.audio.src = audioUrl ? `${audioUrl}?v=${Date.now()}` : '';    els.seek.value = 0;
+    els.audio.src = audioUrl ? `${audioUrl}?v=${Date.now()}` : '';
+
+    els.seek.value = 0;
     els.seek.style.setProperty('--progress', '0%');
     els.currentTime.textContent = '00:00';
     els.duration.textContent = '00:00';
@@ -75,7 +89,7 @@ function setProgram(program, autoplay = false){
     if (autoplay && program.audio) {
       els.audio.play().catch(() => {});
     }
-  }, 180);
+  }, 120);
 }
 
 function makeCard(program){
@@ -84,23 +98,16 @@ function makeCard(program){
   card.className = 'program-card';
   card.dataset.title = program.title || '';
 
-  const img = document.createElement('img');
-  img.src = program.cover || 'images/demo-cover.jpg';
-  img.alt = program.title || 'Programma';
-
-  const text = document.createElement('div');
-
-  const title = document.createElement('strong');
-  title.textContent = program.title || 'Programma';
-
-  const speaker = document.createElement('span');
-  speaker.textContent = program.speaker || 'DG TV';
-
-  text.append(title, speaker);
-  card.append(img, text);
+  card.innerHTML = `
+    <img src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}" alt="${escapeHtml(program.title || 'Programma')}">
+    <div class="card-body">
+      <strong>${escapeHtml(program.title || 'Programma')}</strong>
+      <span>${escapeHtml(program.speaker || 'DG TV')}</span>
+      <em>● ON DEMAND</em>
+    </div>
+  `;
 
   card.addEventListener('click', () => setProgram(program, false));
-
   return card;
 }
 
@@ -169,16 +176,12 @@ els.seek.addEventListener('input', () => {
   }
 });
 
-els.search.addEventListener('input', () => {
-  const q = els.search.value.trim().toLowerCase();
+els.prevBtn.addEventListener('click', () => {
+  els.grid.scrollBy({ left: -260, behavior: 'smooth' });
+});
 
-  const filtered = programs.filter(p =>
-    `${p.title || ''} ${p.speaker || ''} ${p.category || ''}`
-      .toLowerCase()
-      .includes(q)
-  );
-
-  renderPrograms(filtered);
+els.nextBtn.addEventListener('click', () => {
+  els.grid.scrollBy({ left: 260, behavior: 'smooth' });
 });
 
 els.siteBtn.innerHTML = 'LIVE RADIO';
