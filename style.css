@@ -372,14 +372,10 @@ h3::after{
 
 .program-card strong{
   display:block;
-  color:#fff;
-  font-size:15px;
-  font-weight:900;
+  color:white;
+  font-size:17px;
+  line-height:1.12;
   text-transform:uppercase;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  line-height:1.1;
 }
 
 .program-card span{
@@ -538,12 +534,7 @@ h3::after{
     flex-basis:46%;
   }
 
-  .program-card strong{
-    font-size:12px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  .program-card strong{font-size:14px}
   .program-card span{font-size:12px}
 }
 
@@ -785,4 +776,17 @@ input[type=range]::-moz-range-thumb{
     padding:8px 3px !important;
     border-radius:10px !important;
   }
+}
+
+
+/* Force now playing title on one line */
+.now-playing-title,
+.hero-title,
+#nowPlayingTitle,
+.program-title,
+.current-title{
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1 !important;
 }
