@@ -34,21 +34,19 @@ function fitTitleToOneLine(){
   const title = els.title;
   if (!title) return;
 
-  title.style.whiteSpace = 'nowrap';
-  title.style.overflow = 'hidden';
-  title.style.textOverflow = 'ellipsis';
+  title.style.setProperty('white-space', 'nowrap', 'important');
+  title.style.setProperty('overflow', 'hidden', 'important');
+  title.style.setProperty('text-overflow', 'ellipsis', 'important');
+  title.style.setProperty('line-height', '0.95', 'important');
 
-  if (window.innerWidth <= 780) {
-    title.style.fontSize = window.innerWidth <= 420 ? '23px' : '24px';
-  } else {
-    title.style.fontSize = '';
-  }
+  const startSize = window.innerWidth <= 420 ? 30 : (window.innerWidth <= 780 ? 34 : 56);
+  title.style.setProperty('font-size', `${startSize}px`, 'important');
 
   requestAnimationFrame(() => {
-    let size = parseFloat(window.getComputedStyle(title).fontSize);
-    while (title.scrollWidth > title.clientWidth && size > 18) {
+    let size = startSize;
+    while (title.scrollWidth > title.clientWidth && size > 16) {
       size -= 1;
-      title.style.fontSize = `${size}px`;
+      title.style.setProperty('font-size', `${size}px`, 'important');
     }
   });
 }
