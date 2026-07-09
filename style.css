@@ -537,3 +537,421 @@ h3::after{
   .program-card strong{font-size:14px}
   .program-card span{font-size:12px}
 }
+
+
+/* === RITOCCHI FINALI PREMIUM === */
+
+.player-card{
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.player-card.playing{
+  box-shadow:
+    0 0 34px rgba(255,0,120,.45),
+    0 0 70px rgba(0,217,255,.22);
+}
+
+.cover{
+  transition:opacity .25s ease, transform .35s ease, filter .35s ease;
+}
+
+.player-card.playing .cover{
+  transform:scale(1.018);
+  filter:saturate(1.08) contrast(1.05);
+}
+
+.player-card.changing .cover{
+  opacity:.35;
+  transform:scale(.985);
+}
+
+.play-btn{
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.play-btn:hover{
+  transform:scale(1.05);
+}
+
+.player-card.playing .play-btn{
+  box-shadow:
+    0 0 28px rgba(255,43,214,.85),
+    0 0 48px rgba(0,217,255,.22);
+}
+
+input[type=range]{
+  appearance:none;
+  -webkit-appearance:none;
+  height:8px;
+  border-radius:999px;
+  background:
+    linear-gradient(90deg,var(--fuchsia),var(--blue)) 0/var(--progress,0%) 100% no-repeat,
+    rgba(255,255,255,.16);
+  outline:none;
+}
+
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#fff;
+  border:3px solid var(--fuchsia);
+  box-shadow:0 0 14px rgba(255,43,214,.8);
+}
+
+input[type=range]::-moz-range-thumb{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#fff;
+  border:3px solid var(--fuchsia);
+  box-shadow:0 0 14px rgba(255,43,214,.8);
+}
+
+.program-slider{
+  scroll-snap-type:x mandatory;
+  scroll-padding-left:6px;
+}
+
+.program-card{
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+}
+
+.program-card.active{
+  animation:activeGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes activeGlow{
+  0%,100%{
+    box-shadow:0 0 18px rgba(255,0,255,.35);
+  }
+  50%{
+    box-shadow:0 0 30px rgba(255,0,255,.65), 0 0 42px rgba(0,217,255,.20);
+  }
+}
+
+.program-card img{
+  transition:transform .35s ease, filter .35s ease;
+}
+
+.program-card:hover img,
+.program-card.active img{
+  transform:scale(1.045);
+  filter:saturate(1.08);
+}
+
+.action-btn{
+  transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+.action-btn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+
+@media(max-width:780px){
+  .program-slider{
+    scroll-padding-left:8px;
+  }
+
+  .program-card{
+    scroll-snap-align:center;
+  }
+
+  input[type=range]::-webkit-slider-thumb{
+    width:16px;
+    height:16px;
+  }
+}
+
+
+/* === VERSIONE COMPATTA PIÙ VICINA AL MOCKUP === */
+
+.app-shell{
+  width:min(1040px,100%);
+  padding-top:12px;
+  padding-bottom:18px;
+}
+
+.hero-banner{
+  grid-template-columns:135px 1fr;
+  gap:18px;
+  padding:4px 0 14px;
+}
+
+.hero-logo{
+  width:132px;
+  height:132px;
+}
+
+.eyebrow{
+  font-size:20px;
+  letter-spacing:5px;
+  margin-bottom:4px;
+}
+
+h1{
+  font-size:clamp(54px,8vw,88px);
+  line-height:.88;
+}
+
+.subtitle{
+  font-size:24px;
+  margin-top:8px;
+}
+
+.player-card{
+  grid-template-columns:minmax(260px,350px) 1fr;
+  gap:22px;
+  padding:14px;
+  border-radius:24px;
+}
+
+.player-card::before{
+  border-radius:24px;
+}
+
+.cover-wrap{
+  border-radius:18px;
+}
+
+.cover,
+#cover{
+  border-radius:14px;
+}
+
+.live-pill{
+  top:12px;
+  left:12px;
+  padding:7px 10px;
+  font-size:11px;
+}
+
+.category{
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+h2{
+  font-size:clamp(32px,4.4vw,46px);
+  margin-bottom:4px;
+}
+
+.speaker{
+  font-size:19px;
+  margin-bottom:8px;
+}
+
+.description{
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+.visualizer{
+  height:44px;
+  margin-bottom:12px;
+}
+
+.visualizer span{
+  width:6px;
+  height:16px;
+}
+
+.visualizer span:nth-child(2n){height:24px}
+.visualizer span:nth-child(3n){height:34px}
+.visualizer span:nth-child(5n){height:22px}
+
+.play-btn{
+  width:64px;
+  height:64px;
+  font-size:26px;
+  border-width:2px;
+}
+
+.time-row{
+  font-size:13px;
+}
+
+.action-row{
+  gap:14px;
+  margin-top:16px;
+}
+
+.action-btn{
+  min-height:54px;
+  font-size:16px;
+  border-radius:12px;
+}
+
+.programs-section{
+  margin-top:22px;
+}
+
+h3{
+  font-size:21px;
+}
+
+.program-slider{
+  gap:12px;
+  padding-bottom:14px;
+}
+
+.program-card{
+  flex-basis:190px;
+  border-radius:16px;
+}
+
+.program-card .card-body{
+  padding:10px 10px 12px;
+}
+
+.program-card strong{
+  font-size:15px;
+}
+
+.program-card span{
+  font-size:12px;
+  margin-top:5px;
+}
+
+.program-card em{
+  font-size:12px;
+  margin-top:7px;
+}
+
+.slider-arrow{
+  width:42px;
+  height:42px;
+  font-size:32px;
+}
+
+@media(max-width:780px){
+  .app-shell{
+    padding:10px 8px 16px;
+  }
+
+  .hero-banner{
+    grid-template-columns:72px 1fr;
+    gap:10px;
+    padding:4px 0 10px;
+  }
+
+  .hero-logo{
+    width:72px;
+    height:72px;
+  }
+
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:2.5px;
+    margin-bottom:3px;
+  }
+
+  h1{
+    font-size:34px;
+  }
+
+  .subtitle{
+    font-size:14px;
+    margin-top:5px;
+  }
+
+  .player-card{
+    padding:10px;
+    gap:9px;
+    border-radius:20px;
+  }
+
+  .player-card::before{
+    border-radius:20px;
+  }
+
+  .category{
+    font-size:11px;
+    margin-bottom:4px;
+  }
+
+  h2{
+    font-size:27px;
+  }
+
+  .speaker{
+    font-size:14px;
+    margin-bottom:5px;
+  }
+
+  .description{
+    font-size:13px;
+    margin-bottom:7px;
+  }
+
+  .visualizer{
+    height:30px;
+    margin-bottom:8px;
+  }
+
+  .play-btn{
+    width:52px;
+    height:52px;
+    font-size:22px;
+  }
+
+  .action-row{
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    margin-top:10px;
+  }
+
+  .action-btn{
+    min-height:42px;
+    font-size:10.5px;
+    border-radius:10px;
+    padding:8px 2px;
+  }
+
+  .programs-section{
+    margin-top:17px;
+  }
+
+  h3{
+    font-size:18px;
+  }
+
+  h3::after{
+    height:3px;
+    width:54px;
+  }
+
+  .program-slider{
+    gap:8px;
+    padding-bottom:12px;
+  }
+
+  .program-card{
+    flex-basis:38%;
+    border-radius:14px;
+  }
+
+  .program-card .card-body{
+    padding:8px 8px 10px;
+  }
+
+  .program-card strong{
+    font-size:12.5px;
+  }
+
+  .program-card span{
+    font-size:11px;
+  }
+
+  .program-card em{
+    font-size:10.5px;
+  }
+}
+
+@media(max-width:420px){
+  .program-card{
+    flex-basis:41%;
+  }
+}
