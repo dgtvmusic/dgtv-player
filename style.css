@@ -1225,6 +1225,19 @@ header.hero-banner.hero-app .subtitle{
   padding:0 !important;
   overflow:hidden !important;
 }
-.category{
-  display:none !important;
+
+
+/* Titoli lunghi: stessa altezza del player, niente puntini */
+#title.title-small{
+  font-size:2.1rem !important;
+  letter-spacing:0 !important;
+}
+#title.title-xsmall{
+  font-size:1.8rem !important;
+  letter-spacing:0 !important;
+}
+#title{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
 }
