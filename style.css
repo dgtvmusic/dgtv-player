@@ -1192,3 +1192,18 @@ header.hero-banner.hero-app .subtitle{
   header.hero-banner.hero-app h1{font-size:31px !important;}
   header.hero-banner.hero-app .subtitle{font-size:13px !important;max-width:260px !important;}
 }
+
+
+/* FIX DEFINITIVO: elimina la vecchia etichetta viola DG TV sopra il titolo */
+.eyebrow,
+.program-brand,
+.brand,
+#brand,
+#programBrand{
+  display:none !important;
+  visibility:hidden !important;
+  height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+}
