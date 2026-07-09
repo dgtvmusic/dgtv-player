@@ -1108,3 +1108,87 @@ input[type=range]::-moz-range-thumb{
     max-width:260px !important;
   }
 }
+
+
+/* ===== DGTV DEFINITIVO SYNC - HEADER APP FORZATO ===== */
+header.hero-banner.hero-app{
+  display:flex !important;
+  flex-direction:column !important;
+  grid-template-columns:none !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  gap:12px !important;
+  padding:8px 0 14px !important;
+}
+header.hero-banner.hero-app .hero-logo{
+  display:block !important;
+  width:96px !important;
+  height:96px !important;
+  margin:0 auto !important;
+  object-fit:contain !important;
+}
+header.hero-banner.hero-app .hero-copy{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  margin:0 auto !important;
+  text-align:center !important;
+}
+header.hero-banner.hero-app .hero-line{
+  display:block !important;
+  width:min(360px,72%) !important;
+  height:3px !important;
+  margin:0 auto 7px !important;
+  border-radius:999px !important;
+  background:linear-gradient(90deg,transparent,var(--fuchsia),var(--blue),transparent) !important;
+  box-shadow:0 0 14px rgba(255,43,214,.55) !important;
+}
+header.hero-banner.hero-app h1{
+  width:100% !important;
+  margin:0 auto 7px !important;
+  text-align:center !important;
+  font-size:clamp(42px,7vw,78px) !important;
+  line-height:.9 !important;
+  letter-spacing:1px !important;
+  white-space:nowrap !important;
+}
+header.hero-banner.hero-app .subtitle{
+  width:100% !important;
+  max-width:520px !important;
+  margin:8px auto 0 !important;
+  text-align:center !important;
+}
+@media(max-width:780px){
+  header.hero-banner.hero-app{
+    gap:7px !important;
+    padding:6px 0 10px !important;
+  }
+  header.hero-banner.hero-app .hero-logo{
+    width:72px !important;
+    height:72px !important;
+  }
+  header.hero-banner.hero-app .hero-line{
+    width:72% !important;
+    height:3px !important;
+    margin:0 auto 5px !important;
+  }
+  header.hero-banner.hero-app h1{
+    font-size:34px !important;
+    line-height:.9 !important;
+    margin:0 auto 5px !important;
+  }
+  header.hero-banner.hero-app .subtitle{
+    max-width:280px !important;
+    font-size:14px !important;
+    line-height:1.16 !important;
+    margin:6px auto 0 !important;
+  }
+}
+@media(max-width:340px){
+  header.hero-banner.hero-app .hero-logo{width:66px !important;height:66px !important;}
+  header.hero-banner.hero-app h1{font-size:31px !important;}
+  header.hero-banner.hero-app .subtitle{font-size:13px !important;max-width:260px !important;}
+}
