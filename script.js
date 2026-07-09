@@ -107,7 +107,12 @@ function makeCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => setProgram(program, false));
+  card.addEventListener('click', () => {
+    setProgram(program, false);
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }, 120);
+  });
   return card;
 }
 
@@ -177,11 +182,11 @@ els.seek.addEventListener('input', () => {
 });
 
 els.prevBtn.addEventListener('click', () => {
-  els.grid.scrollBy({ left: -260, behavior: 'smooth' });
+  els.grid.scrollBy({ left: -Math.round(els.grid.clientWidth * 0.75), behavior: 'smooth' });
 });
 
 els.nextBtn.addEventListener('click', () => {
-  els.grid.scrollBy({ left: 260, behavior: 'smooth' });
+  els.grid.scrollBy({ left: Math.round(els.grid.clientWidth * 0.75), behavior: 'smooth' });
 });
 
 els.siteBtn.innerHTML = 'LIVE RADIO';
