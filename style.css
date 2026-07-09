@@ -372,10 +372,14 @@ h3::after{
 
 .program-card strong{
   display:block;
-  color:white;
-  font-size:17px;
-  line-height:1.12;
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
   text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.1;
 }
 
 .program-card span{
@@ -534,7 +538,12 @@ h3::after{
     flex-basis:46%;
   }
 
-  .program-card strong{font-size:14px}
+  .program-card strong{
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
   .program-card span{font-size:12px}
 }
 
