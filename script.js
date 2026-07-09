@@ -29,28 +29,6 @@ function formatTime(seconds){
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-
-function fitTitleToOneLine(){
-  const title = els.title;
-  if (!title) return;
-
-  title.style.setProperty('white-space', 'nowrap', 'important');
-  title.style.setProperty('overflow', 'hidden', 'important');
-  title.style.setProperty('text-overflow', 'ellipsis', 'important');
-  title.style.setProperty('line-height', '0.95', 'important');
-
-  const startSize = window.innerWidth <= 420 ? 30 : (window.innerWidth <= 780 ? 34 : 56);
-  title.style.setProperty('font-size', `${startSize}px`, 'important');
-
-  requestAnimationFrame(() => {
-    let size = startSize;
-    while (title.scrollWidth > title.clientWidth && size > 16) {
-      size -= 1;
-      title.style.setProperty('font-size', `${size}px`, 'important');
-    }
-  });
-}
-
 function safeUrl(url, fallback = '#'){
   return url && typeof url === 'string' ? url : fallback;
 }
@@ -62,6 +40,28 @@ function escapeHtml(value){
     .replaceAll('>','&gt;')
     .replaceAll('"','&quot;')
     .replaceAll("'","&#039;");
+}
+
+
+
+function fitTitleToOneLine(){
+  if (!els.title) return;
+
+  // Riporta il font alla dimensione massima prevista dal CSS e poi riduce solo se serve.
+  els.title.style.fontSize = '';
+  els.title.style.whiteSpace = 'nowrap';
+  els.title.style.overflow = 'hidden';
+  els.title.style.textOverflow = 'ellipsis';
+
+  const isMobile = window.innerWidth <= 780;
+  const minSize = isMobile ? 18 : 28;
+  let size = parseFloat(window.getComputedStyle(els.title).fontSize) || 30;
+
+  // Riduce il titolo finché entra nella larghezza disponibile.
+  while (els.title.scrollWidth > els.title.clientWidth && size > minSize) {
+    size -= 1;
+    els.title.style.fontSize = `${size}px`;
+  }
 }
 
 function updateProgress(){
@@ -87,7 +87,7 @@ function setProgram(program, autoplay = false){
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.category.textContent = program.category || 'DG TV';
     els.title.textContent = program.title || 'Programma';
-    fitTitleToOneLine();
+    requestAnimationFrame(fitTitleToOneLine);
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
@@ -221,8 +221,6 @@ els.shareBtn.addEventListener('click', () => {
   window.open('https://dgtvmusic.github.io/dgtv-player/', '_blank');
 });
 
-window.addEventListener('resize', fitTitleToOneLine);
-
 async function init(){
   try {
     const response = await fetch('data/programs.json', { cache: 'no-store' });
@@ -246,5 +244,8 @@ async function init(){
     console.error(err);
   }
 }
+
+window.addEventListener('resize', fitTitleToOneLine);
+window.addEventListener('orientationchange', () => setTimeout(fitTitleToOneLine, 250));
 
 init();
