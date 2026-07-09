@@ -63,14 +63,6 @@ function setProgram(program, autoplay = false){
     els.cover.src = program.cover || 'images/demo-cover.jpg';
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.title.textContent = program.title || 'Programma';
-
-    els.title.classList.remove('title-small','title-xsmall');
-    const len=(program.title||'').length;
-    if(len>24){
-      els.title.classList.add('title-xsmall');
-    }else if(len>18){
-      els.title.classList.add('title-small');
-    }
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
@@ -116,7 +108,7 @@ function makeCard(program){
     <div class="card-body">
       <strong>${escapeHtml(program.title || 'Programma')}</strong>
       <span>${escapeHtml(program.speaker || 'DG TV')}</span>
-      <em>● ON DEMAND</em>
+      <em class="listen-chip">▶ ASCOLTA</em>
     </div>
   `;
 
