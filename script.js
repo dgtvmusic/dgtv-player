@@ -63,6 +63,14 @@ function setProgram(program, autoplay = false){
     els.cover.src = program.cover || 'images/demo-cover.jpg';
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.title.textContent = program.title || 'Programma';
+
+    els.title.classList.remove('title-small','title-xsmall');
+    const titleLen = (program.title || '').length;
+    if (titleLen > 22) {
+      els.title.classList.add('title-xsmall');
+    } else if (titleLen > 16) {
+      els.title.classList.add('title-small');
+    }
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
@@ -112,8 +120,9 @@ function makeCard(program){
     </div>
   `;
 
-  card.addEventListener('click', () => {
-    setProgram(program, false);
+  card.addEventListener('click', (event) => {
+    const autoplay = event.target && event.target.classList && event.target.classList.contains('listen-chip');
+    setProgram(program, autoplay);
     setTimeout(() => {
       card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }, 120);
