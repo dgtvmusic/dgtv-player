@@ -1227,17 +1227,81 @@ header.hero-banner.hero-app .subtitle{
 }
 
 
-/* Titoli lunghi: stessa altezza del player, niente puntini */
-#title.title-small{
-  font-size:2.1rem !important;
-  letter-spacing:0 !important;
+/* === RESTYLING FINALE CARD PROGRAMMI - MOBILE PREMIUM === */
+
+.program-card .listen-chip{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin-top:10px !important;
+  min-height:34px !important;
+  border-radius:10px !important;
+  background:linear-gradient(90deg,#ff007a,#7a2cff,#00cfff) !important;
+  color:#fff !important;
+  font-style:normal !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  letter-spacing:.3px !important;
+  box-shadow:0 0 14px rgba(255,0,122,.35) !important;
 }
-#title.title-xsmall{
-  font-size:1.8rem !important;
-  letter-spacing:0 !important;
+
+.program-card strong{
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:initial !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  min-height:34px !important;
 }
-#title{
+
+.program-card span{
   white-space:nowrap !important;
   overflow:hidden !important;
-  text-overflow:clip !important;
+  text-overflow:ellipsis !important;
+}
+
+@media(max-width:780px){
+  .program-slider{
+    gap:12px !important;
+    padding:2px 8px 14px !important;
+  }
+
+  .program-card{
+    flex:0 0 56% !important;
+    border-radius:18px !important;
+  }
+
+  .program-card .card-body{
+    padding:10px 10px 12px !important;
+  }
+
+  .program-card strong{
+    font-size:14px !important;
+    line-height:1.12 !important;
+    min-height:32px !important;
+  }
+
+  .program-card span{
+    font-size:12px !important;
+    margin-top:6px !important;
+  }
+
+  .program-card .listen-chip{
+    min-height:34px !important;
+    font-size:11px !important;
+    margin-top:10px !important;
+  }
+}
+
+@media(max-width:420px){
+  .program-card{
+    flex:0 0 58% !important;
+  }
+}
+
+@media(max-width:360px){
+  .program-card{
+    flex:0 0 62% !important;
+  }
 }
