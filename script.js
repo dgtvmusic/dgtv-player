@@ -1,7 +1,6 @@
 const els = {
   card: document.getElementById('playerCard'),
   cover: document.getElementById('cover'),
-  category: document.getElementById('category'),
   title: document.getElementById('title'),
   speaker: document.getElementById('speaker'),
   description: document.getElementById('description'),
@@ -63,7 +62,6 @@ function setProgram(program, autoplay = false){
   setTimeout(() => {
     els.cover.src = program.cover || 'images/demo-cover.jpg';
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
-    els.category.textContent = program.category || 'DG TV';
     els.title.textContent = program.title || 'Programma';
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
@@ -206,7 +204,7 @@ els.shareBtn.addEventListener('click', () => {
 
 async function init(){
   try {
-    const response = await fetch('data/programs.json', { cache: 'no-store' });
+    const response = await fetch(`data/programs.json?v=${Date.now()}`, { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error('programs.json non trovato');
