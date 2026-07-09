@@ -227,3 +227,16 @@ async function init(){
 }
 
 init();
+
+
+function removeDgtvLabel(){
+  document.querySelectorAll('.eyebrow, .program-brand, .brand, #brand, #programBrand').forEach(el => el.remove());
+  document.querySelectorAll('.player-info > p, .player-info > span, .player-info > div').forEach(el => {
+    const txt = (el.textContent || '').trim().replace(/\s+/g, ' ').toUpperCase();
+    if (txt === 'DG TV' || txt === 'D G T V') el.remove();
+  });
+}
+
+removeDgtvLabel();
+const dgtvLabelObserver = new MutationObserver(removeDgtvLabel);
+dgtvLabelObserver.observe(document.body, { childList: true, subtree: true });
