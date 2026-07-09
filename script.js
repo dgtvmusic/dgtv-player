@@ -42,28 +42,6 @@ function escapeHtml(value){
     .replaceAll("'","&#039;");
 }
 
-
-
-function fitTitleToOneLine(){
-  if (!els.title) return;
-
-  // Riporta il font alla dimensione massima prevista dal CSS e poi riduce solo se serve.
-  els.title.style.fontSize = '';
-  els.title.style.whiteSpace = 'nowrap';
-  els.title.style.overflow = 'hidden';
-  els.title.style.textOverflow = 'ellipsis';
-
-  const isMobile = window.innerWidth <= 780;
-  const minSize = isMobile ? 18 : 28;
-  let size = parseFloat(window.getComputedStyle(els.title).fontSize) || 30;
-
-  // Riduce il titolo finché entra nella larghezza disponibile.
-  while (els.title.scrollWidth > els.title.clientWidth && size > minSize) {
-    size -= 1;
-    els.title.style.fontSize = `${size}px`;
-  }
-}
-
 function updateProgress(){
   if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
     const percent = (els.audio.currentTime / els.audio.duration) * 100;
@@ -87,7 +65,6 @@ function setProgram(program, autoplay = false){
     els.cover.alt = `Copertina ${program.title || 'programma'}`;
     els.category.textContent = program.category || 'DG TV';
     els.title.textContent = program.title || 'Programma';
-    requestAnimationFrame(fitTitleToOneLine);
     els.speaker.textContent = program.speaker || 'DG TV Music Live Radio';
     els.description.textContent = program.description || '';
 
@@ -244,8 +221,5 @@ async function init(){
     console.error(err);
   }
 }
-
-window.addEventListener('resize', fitTitleToOneLine);
-window.addEventListener('orientationchange', () => setTimeout(fitTitleToOneLine, 250));
 
 init();
