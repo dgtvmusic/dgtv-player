@@ -3,7 +3,7 @@
 // Gli altri campi sono già pronti.
 
 window.DGTV_CONFIG = {
-  STREAM_URL: "INCOLLA_QUI_URL_STREAM",
+  STREAM_URL: "https://stream.zeno.fm/ki5fhhpz6lptv",
   TITLE: "DG TV Live Radio",
   ARTIST: "Musica non stop",
   COVER: "assets/cover.jpg",
