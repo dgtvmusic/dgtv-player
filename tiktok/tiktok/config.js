@@ -1,0 +1,4 @@
+window.DGTV_OVERLAY = {
+  PROGRAM_TITLE: "DG TV LIVE RADIO",
+  PROGRAM_SUBTITLE: "Musica non stop"
+};
