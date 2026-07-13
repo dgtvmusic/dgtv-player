@@ -2,65 +2,56 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-  <title>DG TV Live Radio – TikTok Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>DG TV Live Radio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="screen">
-    <header class="top">
+    <header>
       <div class="live"><span></span> LIVE</div>
-      <div class="time">
-        <strong id="clock">--:--</strong>
+      <div class="clock">
+        <strong id="time">--:--</strong>
         <small id="date">--</small>
       </div>
     </header>
 
-    <section class="brand">
-      <img src="assets/logo.jpg" alt="DG TV Live Radio">
-      <div>
-        <p>LA WEB RADIO DEL FVG</p>
-        <h1>DG TV LIVE RADIO</h1>
-        <span>La tua musica. La tua radio. Sempre on air.</span>
-      </div>
+    <section class="logo-wrap">
+      <img src="assets/logo.jpg" alt="DG TV Music Live Radio">
     </section>
 
-    <section class="hero">
-      <img src="assets/hero.jpg" alt="Ascoltaci ovunque">
-      <div class="hero-overlay"></div>
-      <div class="hero-text">
-        <b>ASCOLTACI OVUNQUE</b>
+    <section class="claim">
+      <p>LA WEB RADIO DEL</p>
+      <h1>FRIULI VENEZIA GIULIA</h1>
+    </section>
+
+    <section class="equalizer" id="equalizer" aria-hidden="true"></section>
+
+    <section class="info">
+      <div>
+        <small>ASCOLTACI SU</small>
         <strong>www.dgtvmusic.com</strong>
       </div>
+      <div>
+        <small>WHATSAPP</small>
+        <strong>320 802 6411</strong>
+      </div>
     </section>
 
-    <section class="program">
-      <div class="program-label">PROGRAMMA IN ONDA</div>
-      <h2 id="programTitle">DG TV LIVE RADIO</h2>
-      <p id="programSubtitle">Musica non stop</p>
-
-      <div class="equalizer" id="equalizer" aria-hidden="true"></div>
-
-      <div class="info-grid">
-        <div>
-          <small>WHATSAPP</small>
-          <strong>320 802 6411</strong>
-        </div>
-        <div>
-          <small>TIKTOK</small>
-          <strong>@dgtvliveradio</strong>
-        </div>
-      </div>
+    <section class="services">
+      <span>MUSICA NON STOP</span>
+      <span>NEWS</span>
+      <span>METEO</span>
+      <span>OROSCOPO</span>
     </section>
 
     <footer>
       <div class="ticker">
-        <div>DG TV LIVE RADIO • MUSICA • NEWS • OROSCOPO • LIVE SHOW • WWW.DGTVMUSIC.COM • DG TV LIVE RADIO • MUSICA • NEWS • OROSCOPO • LIVE SHOW • WWW.DGTVMUSIC.COM •</div>
+        <div>DG TV LIVE RADIO • LA TUA MUSICA • LA TUA RADIO • SEMPRE ON AIR • WWW.DGTVMUSIC.COM • DG TV LIVE RADIO •</div>
       </div>
     </footer>
   </main>
 
-  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
