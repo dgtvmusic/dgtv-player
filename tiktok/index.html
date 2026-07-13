@@ -2,49 +2,43 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>DG TV Live Radio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="stage">
-    <div class="glow glow-a"></div>
-    <div class="glow glow-b"></div>
+  <div id="viewport">
+    <main id="canvas">
+      <div class="grid"></div>
+      <div class="glow glow1"></div>
+      <div class="glow glow2"></div>
 
-    <header>
-      <div class="live"><span></span> LIVE</div>
+      <div class="live-badge"><span></span>LIVE</div>
+
       <div class="clock">
         <strong id="time">--:--</strong>
         <small id="date">--</small>
       </div>
-    </header>
 
-    <section class="logo-area">
-      <img src="assets/logo.jpg" alt="DG TV Music Live Radio">
-    </section>
+      <img class="logo" src="assets/logo.jpg" alt="DG TV Music Live Radio">
 
-    <section class="eq-wrap">
-      <div class="eq" id="eq"></div>
-    </section>
+      <div class="equalizer" id="equalizer"></div>
 
-    <section class="contact">
-      <div>
+      <div class="site-box info-box">
         <small>ASCOLTACI SU</small>
         <strong>www.dgtvmusic.com</strong>
       </div>
-      <div>
+
+      <div class="whatsapp-box info-box">
         <small>WHATSAPP</small>
         <strong>320 802 6411</strong>
       </div>
-    </section>
 
-    <footer>
-      <div class="ticker"><span>
-        DG TV LIVE RADIO • LA TUA MUSICA • LA TUA RADIO • SEMPRE ON AIR •
-        DG TV LIVE RADIO • LA TUA MUSICA • LA TUA RADIO • SEMPRE ON AIR •
-      </span></div>
-    </footer>
-  </main>
+      <div class="ticker">
+        <div>DG TV LIVE RADIO • LA TUA MUSICA • LA TUA RADIO • SEMPRE ON AIR • WWW.DGTVMUSIC.COM • DG TV LIVE RADIO •</div>
+      </div>
+    </main>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
