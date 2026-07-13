@@ -9,8 +9,8 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-const eq = document.getElementById("equalizer");
-for(let i=0;i<28;i++){
+const eq = document.getElementById("eq");
+for(let i=0;i<30;i++){
   const bar = document.createElement("i");
   bar.style.animationDuration = (0.55 + Math.random()*0.95) + "s";
   bar.style.animationDelay = (Math.random()*0.45) + "s";
