@@ -638,3 +638,12 @@ body{
 .bottom{bottom:90px!important;padding:0 120px!important;}
 .info-box{width:520px!important;}
 .ticker{height:70px!important;}
+
+
+/* Modern layout overrides */
+.logo-area{top:190px!important;}
+.logo{width:620px!important;height:620px!important;}
+.equalizer{top:860px!important;width:1780px!important;}
+.ticker{height:56px!important;font-size:22px;}
+
+.bottom{display:none!important;}
