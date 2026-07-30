@@ -619,3 +619,22 @@ body{
 /* ==========================================
    FINE FILE
 ========================================== */
+
+
+/* === Desktop overrides === */
+#canvas{
+ left:50%!important;
+ top:50%!important;
+ width:1920px!important;
+ height:1080px!important;
+ transform:translate(-50%,-50%)!important;
+}
+.clock{top:20px!important;left:50%!important;transform:translateX(-50%)!important;text-align:center!important;}
+.clock #time{font-size:96px!important;}
+.clock #date{font-size:28px!important;}
+.logo-area{top:150px!important;width:100%!important;display:flex!important;justify-content:center!important;}
+.logo{width:460px!important;height:460px!important;}
+.equalizer{top:650px!important;width:1700px!important;height:220px!important;}
+.bottom{bottom:90px!important;padding:0 120px!important;}
+.info-box{width:520px!important;}
+.ticker{height:70px!important;}
