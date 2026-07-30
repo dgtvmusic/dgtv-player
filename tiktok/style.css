@@ -5,197 +5,144 @@
   --red:#ff3152;
   --green:#39f28d;
   --yellow:#ffd33d;
-  --bg:#03040a;
 }
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+background:#020308;
+font-family:Arial,Helvetica,sans-serif;
+color:#fff;
 }
-
-html,
-body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#020308;
-  font-family:Arial,Helvetica,sans-serif;
-  color:#fff;
-}
-
-body{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
 #viewport{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(39,220,255,.12),transparent 35%),
-    radial-gradient(circle at 80% 80%,rgba(255,47,162,.12),transparent 35%),
-    #020308;
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:
+radial-gradient(circle at 20% 20%,rgba(39,220,255,.12),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(255,47,162,.12),transparent 35%),
+#020308;
 }
-
 #canvas{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:1920px;
-  height:1080px;
-  transform:translate(-50%,-50%);
-  transform-origin:center center;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(123,55,255,.18),transparent 35%),
-    radial-gradient(circle at 0% 50%,rgba(39,220,255,.12),transparent 30%),
-    radial-gradient(circle at 100% 100%,rgba(255,47,162,.15),transparent 35%),
-    var(--bg);
+position:absolute;
+left:50%;
+top:50%;
+width:1920px;
+height:1080px;
+transform:translate(-50%,-50%);
+background:
+radial-gradient(circle at 50% 0%,rgba(123,55,255,.22),transparent 40%),
+#03040a;
+overflow:hidden;
 }
-
 .grid{
-  position:absolute;
-  inset:0;
-  opacity:.35;
-  background-image:
-      linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
-  background-size:40px 40px;
+position:absolute;
+inset:0;
+opacity:.35;
+background-image:
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+background-size:40px 40px;
 }
-
-.glow{
-  position:absolute;
-  width:700px;
-  height:700px;
-  border-radius:50%;
-  filter:blur(150px);
-  opacity:.20;
-}
-
-.glow1{
-  left:-250px;
-  top:120px;
-  background:var(--cyan);
-}
-
-.glow2{
-  right:-250px;
-  bottom:-150px;
-  background:var(--pink);
-}
-
-/* ===== BADGE LIVE ===== */
+.glow{position:absolute;width:700px;height:700px;border-radius:50%;filter:blur(140px);opacity:.18}
+.glow1{left:-180px;top:120px;background:var(--cyan)}
+.glow2{right:-180px;bottom:-120px;background:var(--pink)}
 
 .live-badge{
-    position:absolute;
-    top:40px;
-    left:45px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:18px 32px;
-    border-radius:50px;
-    background:rgba(255,49,82,.12);
-    border:2px solid rgba(255,49,82,.55);
-    box-shadow:0 0 35px rgba(255,49,82,.30);
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:.12em;
-    backdrop-filter:blur(10px);
+position:absolute;left:40px;top:35px;
+padding:18px 28px;border-radius:40px;
+display:flex;gap:12px;align-items:center;
+background:rgba(255,49,82,.15);
+border:2px solid rgba(255,49,82,.5);
+font-weight:900;font-size:28px;
 }
-
 .live-badge span{
-    width:18px;
-    height:18px;
-    border-radius:50%;
-    background:var(--red);
-    box-shadow:0 0 15px var(--red);
-    animation:blink 1s infinite;
+width:16px;height:16px;border-radius:50%;
+background:var(--red);
+animation:blink 1s infinite;
 }
-
-/* ===== OROLOGIO ===== */
 
 .clock{
-    position:absolute;
-    top:35px;
-    right:45px;
-    text-align:right;
+position:absolute;
+top:25px;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
 }
-
-.clock strong{
-    display:block;
-    font-size:58px;
-    font-weight:900;
-    line-height:1;
-}
-
-.clock small{
-    display:block;
-    margin-top:8px;
-    color:#bfc6d7;
-    font-size:22px;
-    text-transform:capitalize;
-}
-
-/* ===== LOGO ===== */
+.clock strong{display:block;font-size:86px;font-weight:900}
+.clock small{display:block;font-size:24px;color:#c7c7d8}
 
 .logo{
-    position:absolute;
-    top:120px;
-    left:50%;
-    transform:translateX(-50%);
-    width:520px;
-    height:520px;
-    border-radius:50%;
-    object-fit:cover;
-
-    box-shadow:
-        0 0 45px rgba(255,47,162,.30),
-        0 0 80px rgba(39,220,255,.18);
-
-    animation:float 5s ease-in-out infinite;
+position:absolute;
+left:50%;
+top:140px;
+transform:translateX(-50%);
+width:520px;
+height:520px;
+border-radius:50%;
+object-fit:cover;
+box-shadow:0 0 60px rgba(255,47,162,.35);
 }
-
-/* ===== EQUALIZER ===== */
 
 .equalizer{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    top:670px;
-
-    width:1500px;
-    height:220px;
-
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    gap:10px;
-
-    overflow:hidden;
+position:absolute;
+left:50%;
+top:700px;
+transform:translateX(-50%);
+width:1500px;
+height:200px;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+gap:8px;
 }
-
 .equalizer i{
-
-    width:18px;
-    min-height:18px;
-
-    border-radius:20px 20px 4px 4px;
-
-    background:linear-gradient(
-        to top,
-        var(--pink),
-        var(--violet),
-        var(--cyan),
-        var(--green),
-        var(--yellow)
-    );
-
-    box-shadow:0 0 12px rgba(255,47,162,.35);
-
-    animation:bar .9s ease-in-out infinite alternate;
+width:18px;
+min-height:18px;
+border-radius:18px 18px 4px 4px;
+background:linear-gradient(to top,var(--pink),var(--violet),var(--cyan),var(--green),var(--yellow));
+animation:bar .9s infinite alternate;
 }
+
+.info-row{
+position:absolute;
+left:0;
+right:0;
+bottom:110px;
+display:flex;
+justify-content:space-around;
+}
+.info-box{
+width:470px;
+padding:22px;
+text-align:center;
+border-radius:22px;
+background:rgba(15,18,30,.9);
+border:1px solid rgba(255,255,255,.12);
+}
+.info-box small{display:block;font-size:18px;color:#bfc6d7}
+.info-box strong{display:block;margin-top:8px;font-size:32px}
+
+.ticker{
+position:absolute;
+left:0;right:0;bottom:0;
+height:60px;
+display:flex;
+align-items:center;
+overflow:hidden;
+border-top:1px solid rgba(255,255,255,.12);
+background:rgba(0,0,0,.35);
+}
+.ticker div{
+white-space:nowrap;
+padding-left:100%;
+font-size:22px;
+font-weight:700;
+animation:ticker 24s linear infinite;
+}
+
+@keyframes blink{50%{opacity:.35}}
+@keyframes bar{from{height:25px}to{height:180px}}
+@keyframes ticker{to{transform:translateX(-100%)}}
