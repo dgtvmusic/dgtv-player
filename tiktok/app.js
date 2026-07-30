@@ -1,27 +1,42 @@
-
-function fitCanvas(){
+function fitCanvas() {
   const canvas = document.getElementById("canvas");
-  const sx = window.innerWidth / 1080;
-  const sy = window.innerHeight / 1920;
-  canvas.style.transform = `scale(${sx},${sy})`;
+
+  const scale = Math.min(
+    window.innerWidth / 1080,
+    window.innerHeight / 1920
+  ) * 1.25; // Aumenta del 25%
+
+  canvas.style.transformOrigin = "top left";
+  canvas.style.transform = `scale(${scale})`;
 }
+
 window.addEventListener("resize", fitCanvas);
 fitCanvas();
 
-function updateClock(){
+function updateClock() {
   const now = new Date();
   document.getElementById("time").textContent =
-    now.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+    now.toLocaleTimeString("it-IT", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
   document.getElementById("date").textContent =
-    now.toLocaleDateString("it-IT",{weekday:"long",day:"2-digit",month:"long"});
+    now.toLocaleDateString("it-IT", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long"
+    });
 }
+
 updateClock();
-setInterval(updateClock,1000);
+setInterval(updateClock, 1000);
 
 const eq = document.getElementById("equalizer");
-for(let i=0;i<30;i++){
+
+for (let i = 0; i < 30; i++) {
   const bar = document.createElement("i");
-  bar.style.animationDuration = (0.58 + Math.random()*0.92) + "s";
-  bar.style.animationDelay = (Math.random()*0.45) + "s";
+  bar.style.animationDuration = (0.58 + Math.random() * 0.92) + "s";
+  bar.style.animationDelay = (Math.random() * 0.45) + "s";
   eq.appendChild(bar);
 }
