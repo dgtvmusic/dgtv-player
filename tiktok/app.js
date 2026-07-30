@@ -1,32 +1,38 @@
 function fitCanvas() {
   const canvas = document.getElementById("canvas");
 
-  const scale = Math.min(
-    window.innerWidth / 1080,
-    window.innerHeight / 1920
-  ) * 1.25; // Aumenta del 25%
+  if (!canvas) return;
 
-  canvas.style.transformOrigin = "top left";
-  canvas.style.transform = `scale(${scale})`;
+  const scale = Math.min(
+    window.innerWidth / 1920,
+    window.innerHeight / 1080
+  );
+
+  canvas.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 
 window.addEventListener("resize", fitCanvas);
-fitCanvas();
+window.addEventListener("load", fitCanvas);
 
 function updateClock() {
   const now = new Date();
-  document.getElementById("time").textContent =
-    now.toLocaleTimeString("it-IT", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
 
-  document.getElementById("date").textContent =
-    now.toLocaleDateString("it-IT", {
-      weekday: "long",
-      day: "2-digit",
-      month: "long"
-    });
+  const time = now.toLocaleTimeString("it-IT", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  const date = now.toLocaleDateString("it-IT", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long"
+  });
+
+  const timeEl = document.getElementById("time");
+  const dateEl = document.getElementById("date");
+
+  if (timeEl) timeEl.textContent = time;
+  if (dateEl) dateEl.textContent = date;
 }
 
 updateClock();
@@ -34,9 +40,20 @@ setInterval(updateClock, 1000);
 
 const eq = document.getElementById("equalizer");
 
-for (let i = 0; i < 30; i++) {
-  const bar = document.createElement("i");
-  bar.style.animationDuration = (0.58 + Math.random() * 0.92) + "s";
-  bar.style.animationDelay = (Math.random() * 0.45) + "s";
-  eq.appendChild(bar);
+if (eq) {
+
+  eq.innerHTML = "";
+
+  for (let i = 0; i < 64; i++) {
+
+    const bar = document.createElement("i");
+
+    bar.style.animationDuration =
+      (0.5 + Math.random() * 0.8) + "s";
+
+    bar.style.animationDelay =
+      (Math.random() * 0.4) + "s";
+
+    eq.appendChild(bar);
+  }
 }
