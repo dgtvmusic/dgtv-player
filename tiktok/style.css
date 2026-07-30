@@ -647,3 +647,19 @@ body{
 .ticker{height:56px!important;font-size:22px;}
 
 .bottom{display:none!important;}
+
+
+/* 977x721 redesign */
+#canvas{width:977px!important;height:721px!important;}
+.hero-banner{
+ position:absolute;top:80px;left:50%;
+ transform:translateX(-50%);
+ width:860px;height:170px;
+ display:flex;justify-content:center;align-items:center;
+}
+.hero-banner img{max-width:100%;max-height:100%;object-fit:contain;}
+.logo-area{top:250px!important;width:100%;}
+.logo{width:260px!important;height:260px!important;}
+.equalizer{top:540px!important;width:860px!important;height:110px!important;}
+.ticker{height:48px!important;}
+.bottom{display:none!important;}
