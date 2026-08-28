@@ -21,16 +21,27 @@ let programs = [];
 let currentProgram = null;
 let currentIndex = 0;
 
+
+/* =========================================================
+   UTILITY
+   ========================================================= */
+
 function formatTime(seconds){
   if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
+
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
+
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
+
 function safeUrl(url, fallback = '#'){
-  return url && typeof url === 'string' ? url : fallback;
+  return url && typeof url === 'string'
+    ? url
+    : fallback;
 }
+
 
 function escapeHtml(value){
   return String(value || '')
@@ -41,223 +52,502 @@ function escapeHtml(value){
     .replaceAll("'","&#039;");
 }
 
+
 /* =========================================================
-   IPHONE / IOS MEDIA SESSION
-   Aggiorna titolo, DJ e copertina nella schermata di blocco
+   MEDIA SESSION - IPHONE / IOS
    ========================================================= */
 
-function updateMediaSession(program){
-  if (!('mediaSession' in navigator) || !program) return;
+function getCoverUrl(program){
 
-  const coverUrl = program.cover
-    ? new URL(program.cover, window.location.href).href
-    : new URL('images/demo-cover.jpg', window.location.href).href;
+  const cover =
+    program && program.cover
+      ? program.cover
+      : 'images/demo-cover.jpg';
 
   try {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: program.title || 'Programma',
-      artist: program.speaker || 'DG TV LIVE RADIO',
-      album: 'DG TV LIVE RADIO • ON DEMAND',
-      artwork: [
-        {
-          src: coverUrl,
-          sizes: '96x96',
-          type: 'image/png'
-        },
-        {
-          src: coverUrl,
-          sizes: '128x128',
-          type: 'image/png'
-        },
-        {
-          src: coverUrl,
-          sizes: '192x192',
-          type: 'image/png'
-        },
-        {
-          src: coverUrl,
-          sizes: '256x256',
-          type: 'image/png'
-        },
-        {
-          src: coverUrl,
-          sizes: '384x384',
-          type: 'image/png'
-        },
-        {
-          src: coverUrl,
-          sizes: '512x512',
-          type: 'image/png'
-        }
-      ]
-    });
-  } catch (err) {
-    console.warn('Media Session metadata non disponibile:', err);
+    return new URL(
+      cover,
+      window.location.href
+    ).href;
+  } catch(err) {
+    return cover;
   }
 }
+
+
+function getArtworkType(url){
+
+  const cleanUrl =
+    String(url || '')
+      .split('?')[0]
+      .split('#')[0]
+      .toLowerCase();
+
+  if (cleanUrl.endsWith('.jpg') ||
+      cleanUrl.endsWith('.jpeg')) {
+    return 'image/jpeg';
+  }
+
+  if (cleanUrl.endsWith('.webp')) {
+    return 'image/webp';
+  }
+
+  if (cleanUrl.endsWith('.gif')) {
+    return 'image/gif';
+  }
+
+  return 'image/png';
+}
+
+
+function updateMediaSession(program){
+
+  if (
+    !program ||
+    !('mediaSession' in navigator) ||
+    typeof MediaMetadata === 'undefined'
+  ) {
+    return;
+  }
+
+  const coverUrl = getCoverUrl(program);
+  const artworkType = getArtworkType(coverUrl);
+
+  try {
+
+    navigator.mediaSession.metadata =
+      new MediaMetadata({
+
+        title:
+          program.title ||
+          'DG TV LIVE RADIO',
+
+        artist:
+          program.speaker ||
+          'DG TV LIVE RADIO',
+
+        album:
+          'DG TV LIVE RADIO • ON DEMAND',
+
+        artwork: [
+
+          {
+            src: coverUrl,
+            sizes: '96x96',
+            type: artworkType
+          },
+
+          {
+            src: coverUrl,
+            sizes: '128x128',
+            type: artworkType
+          },
+
+          {
+            src: coverUrl,
+            sizes: '192x192',
+            type: artworkType
+          },
+
+          {
+            src: coverUrl,
+            sizes: '256x256',
+            type: artworkType
+          },
+
+          {
+            src: coverUrl,
+            sizes: '384x384',
+            type: artworkType
+          },
+
+          {
+            src: coverUrl,
+            sizes: '512x512',
+            type: artworkType
+          }
+
+        ]
+
+      });
+
+  } catch(err) {
+
+    console.warn(
+      'Errore Media Session:',
+      err
+    );
+
+  }
+}
+
+
+/* =========================================================
+   MEDIA SESSION CONTROLLI IPHONE
+   ========================================================= */
 
 function setupMediaSession(){
 
-  if (!('mediaSession' in navigator)) return;
+  if (!('mediaSession' in navigator)) {
+    return;
+  }
+
 
   try {
-    navigator.mediaSession.setActionHandler('play', () => {
-      els.audio.play().catch(() => {});
-    });
-  } catch (err) {}
+
+    navigator.mediaSession.setActionHandler(
+      'play',
+      () => {
+
+        els.audio.play().catch(() => {});
+
+      }
+    );
+
+  } catch(err) {}
+
 
   try {
-    navigator.mediaSession.setActionHandler('pause', () => {
-      els.audio.pause();
-    });
-  } catch (err) {}
+
+    navigator.mediaSession.setActionHandler(
+      'pause',
+      () => {
+
+        els.audio.pause();
+
+      }
+    );
+
+  } catch(err) {}
+
 
   try {
-    navigator.mediaSession.setActionHandler('nexttrack', () => {
-      playNextProgram();
-    });
-  } catch (err) {}
+
+    navigator.mediaSession.setActionHandler(
+      'nexttrack',
+      () => {
+
+        playNextProgram();
+
+      }
+    );
+
+  } catch(err) {}
+
 
   try {
-    navigator.mediaSession.setActionHandler('previoustrack', () => {
-      playPreviousProgram();
-    });
-  } catch (err) {}
+
+    navigator.mediaSession.setActionHandler(
+      'previoustrack',
+      () => {
+
+        playPreviousProgram();
+
+      }
+    );
+
+  } catch(err) {}
+
+
+  try {
+
+    navigator.mediaSession.setActionHandler(
+      'stop',
+      () => {
+
+        els.audio.pause();
+        els.audio.currentTime = 0;
+
+      }
+    );
+
+  } catch(err) {}
+
 }
 
+
 /* =========================================================
-   PROGRESSO
+   PROGRESS
    ========================================================= */
 
 function updateProgress(){
-  if (Number.isFinite(els.audio.duration) && els.audio.duration > 0) {
-    const percent = (els.audio.currentTime / els.audio.duration) * 100;
+
+  if (
+    Number.isFinite(els.audio.duration) &&
+    els.audio.duration > 0
+  ) {
+
+    const percent =
+      (els.audio.currentTime /
+      els.audio.duration) * 100;
 
     els.seek.value = percent;
-    els.seek.style.setProperty('--progress', `${percent}%`);
 
-    els.currentTime.textContent = formatTime(els.audio.currentTime);
-    els.duration.textContent = formatTime(els.audio.duration);
+    els.seek.style.setProperty(
+      '--progress',
+      `${percent}%`
+    );
+
+    els.currentTime.textContent =
+      formatTime(
+        els.audio.currentTime
+      );
+
+    els.duration.textContent =
+      formatTime(
+        els.audio.duration
+      );
+
   }
+
 }
 
+
 /* =========================================================
-   CAMBIO PROGRAMMA
+   SET PROGRAM
    ========================================================= */
 
 function setProgram(program, autoplay = false){
+
   if (!program) return;
 
   currentProgram = program;
-  currentIndex = programs.findIndex(p => p.title === program.title);
+
+  currentIndex =
+    programs.findIndex(
+      p => p.title === program.title
+    );
 
   els.card.classList.add('changing');
 
+
   setTimeout(() => {
 
-    els.cover.src = program.cover || 'images/demo-cover.jpg';
-    els.cover.alt = `Copertina ${program.title || 'programma'}`;
+    /* COPERTINA */
+    els.cover.src =
+      program.cover ||
+      'images/demo-cover.jpg';
 
-    els.title.textContent = program.title || 'Programma';
+    els.cover.alt =
+      `Copertina ${program.title || 'programma'}`;
 
-    els.title.classList.remove('title-small','title-xsmall');
 
-    const titleLen = (program.title || '').length;
+    /* TITOLO */
+    els.title.textContent =
+      program.title ||
+      'Programma';
+
+
+    els.title.classList.remove(
+      'title-small',
+      'title-xsmall'
+    );
+
+
+    const titleLen =
+      (program.title || '').length;
+
 
     if (titleLen > 22) {
-      els.title.classList.add('title-xsmall');
+
+      els.title.classList.add(
+        'title-xsmall'
+      );
+
     } else if (titleLen > 16) {
-      els.title.classList.add('title-small');
+
+      els.title.classList.add(
+        'title-small'
+      );
+
     }
 
+
+    /* DJ */
     els.speaker.textContent =
-      program.speaker || 'DG TV Music Live Radio';
+      program.speaker ||
+      'DG TV Music Live Radio';
 
+
+    /* DESCRIZIONE */
     els.description.textContent =
-      program.description || '';
+      program.description ||
+      '';
 
-    const audioUrl = safeUrl(program.audio, '');
 
-    els.audio.src = audioUrl
-      ? `${audioUrl}?v=${Date.now()}`
-      : '';
-
-    els.seek.value = 0;
-    els.seek.style.setProperty('--progress', '0%');
-
-    els.currentTime.textContent = '00:00';
-    els.duration.textContent = '00:00';
-
-    els.playBtn.textContent = '▶';
-    els.card.classList.remove('playing');
-
-    els.whatsappBtn.href =
-      safeUrl(program.whatsapp, 'https://wa.me/393208026411');
-
-    /* AGGIORNA TITOLO, DJ E COPERTINA SU IPHONE */
-    updateMediaSession(program);
-
-    document.querySelectorAll('.program-card').forEach(card => {
-      card.classList.toggle(
-        'active',
-        card.dataset.title === program.title
+    /* AUDIO */
+    const audioUrl =
+      safeUrl(
+        program.audio,
+        ''
       );
-    });
 
+
+    els.audio.src =
+      audioUrl
+        ? `${audioUrl}?v=${Date.now()}`
+        : '';
+
+
+    /* RESET PLAYER */
+    els.seek.value = 0;
+
+    els.seek.style.setProperty(
+      '--progress',
+      '0%'
+    );
+
+    els.currentTime.textContent =
+      '00:00';
+
+    els.duration.textContent =
+      '00:00';
+
+    els.playBtn.textContent =
+      '▶';
+
+    els.card.classList.remove(
+      'playing'
+    );
+
+
+    /* WHATSAPP */
+    els.whatsappBtn.href =
+      safeUrl(
+        program.whatsapp,
+        'https://wa.me/393208026411'
+      );
+
+
+    /*
+       MEDIA SESSION
+
+       Aggiorniamo subito titolo,
+       DJ e copertina.
+    */
+
+    updateMediaSession(
+      program
+    );
+
+
+    /* CARD ATTIVA */
+    document
+      .querySelectorAll('.program-card')
+      .forEach(card => {
+
+        card.classList.toggle(
+          'active',
+          card.dataset.title ===
+          program.title
+        );
+
+      });
+
+
+    /* SCROLL CARD */
     const activeCard =
-      document.querySelector('.program-card.active');
+      document.querySelector(
+        '.program-card.active'
+      );
 
-    if (activeCard && els.grid) {
+
+    if (
+      activeCard &&
+      els.grid
+    ) {
 
       const left =
         activeCard.offsetLeft -
         (els.grid.clientWidth / 2) +
         (activeCard.clientWidth / 2);
 
+
       els.grid.scrollTo({
-        left: Math.max(0, left),
+
+        left: Math.max(
+          0,
+          left
+        ),
+
         behavior: 'smooth'
+
       });
+
     }
+
 
     removeDgtvLabel();
 
-    els.card.classList.remove('changing');
+    els.card.classList.remove(
+      'changing'
+    );
 
-    if (autoplay && program.audio) {
-      els.audio.play().catch(() => {});
+
+    /* AUTOPLAY */
+    if (
+      autoplay &&
+      program.audio
+    ) {
+
+      els.audio
+        .play()
+        .catch(() => {});
+
     }
 
   }, 120);
+
 }
 
+
 /* =========================================================
-   CARD PROGRAMMI
+   CARD PROGRAMMA
    ========================================================= */
 
 function makeCard(program){
 
-  const card = document.createElement('button');
+  const card =
+    document.createElement(
+      'button'
+    );
 
   card.type = 'button';
-  card.className = 'program-card';
 
-  card.dataset.title = program.title || '';
+  card.className =
+    'program-card';
+
+  card.dataset.title =
+    program.title || '';
+
 
   card.innerHTML = `
+
     <img
-      src="${escapeHtml(program.cover || 'images/demo-cover.jpg')}"
-      alt="${escapeHtml(program.title || 'Programma')}"
+      src="${escapeHtml(
+        program.cover ||
+        'images/demo-cover.jpg'
+      )}"
+      alt="${escapeHtml(
+        program.title ||
+        'Programma'
+      )}"
     >
 
     <div class="card-body">
 
       <strong>
-        ${escapeHtml(program.title || 'Programma')}
+        ${escapeHtml(
+          program.title ||
+          'Programma'
+        )}
       </strong>
 
       <span>
-        ${escapeHtml(program.speaker || 'DG TV')}
+        ${escapeHtml(
+          program.speaker ||
+          'DG TV'
+        )}
       </span>
 
       <em class="listen-chip">
@@ -265,31 +555,50 @@ function makeCard(program){
       </em>
 
     </div>
+
   `;
 
-  card.addEventListener('click', (event) => {
 
-    const autoplay =
-      event.target &&
-      event.target.classList &&
-      event.target.classList.contains('listen-chip');
+  card.addEventListener(
+    'click',
+    (event) => {
 
-    setProgram(program, autoplay);
+      const autoplay =
+        event.target &&
+        event.target.classList &&
+        event.target.classList.contains(
+          'listen-chip'
+        );
 
-    setTimeout(() => {
 
-      card.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest'
-      });
+      setProgram(
+        program,
+        autoplay
+      );
 
-    }, 120);
 
-  });
+      setTimeout(() => {
+
+        card.scrollIntoView({
+
+          behavior: 'smooth',
+
+          inline: 'center',
+
+          block: 'nearest'
+
+        });
+
+      }, 120);
+
+    }
+  );
+
 
   return card;
+
 }
+
 
 /* =========================================================
    RENDER PROGRAMMI
@@ -299,220 +608,406 @@ function renderPrograms(list){
 
   els.grid.innerHTML = '';
 
+
   if (!list.length) {
 
-    const empty = document.createElement('div');
+    const empty =
+      document.createElement(
+        'div'
+      );
 
-    empty.className = 'empty-state';
-    empty.textContent = 'Nessun programma trovato.';
+    empty.className =
+      'empty-state';
 
-    els.grid.appendChild(empty);
+    empty.textContent =
+      'Nessun programma trovato.';
+
+    els.grid.appendChild(
+      empty
+    );
 
     return;
+
   }
 
-  list.forEach(program => {
-    els.grid.appendChild(makeCard(program));
-  });
+
+  list.forEach(
+    program => {
+
+      els.grid.appendChild(
+        makeCard(program)
+      );
+
+    }
+  );
+
 
   if (currentProgram) {
 
-    document.querySelectorAll('.program-card').forEach(card => {
+    document
+      .querySelectorAll(
+        '.program-card'
+      )
+      .forEach(card => {
 
-      card.classList.toggle(
-        'active',
-        card.dataset.title === currentProgram.title
-      );
+        card.classList.toggle(
+          'active',
+          card.dataset.title ===
+          currentProgram.title
+        );
 
-    });
+      });
 
   }
+
 }
 
+
 /* =========================================================
-   PROGRAMMA SUCCESSIVO
+   NEXT PROGRAM
    ========================================================= */
 
 function playNextProgram(){
 
-  if (!programs.length) return;
+  if (!programs.length) {
+    return;
+  }
+
 
   const nextIndex =
-    currentIndex >= programs.length - 1
+    currentIndex >=
+    programs.length - 1
       ? 0
       : currentIndex + 1;
 
-  setProgram(programs[nextIndex], true);
+
+  setProgram(
+    programs[nextIndex],
+    true
+  );
+
 }
 
+
 /* =========================================================
-   PROGRAMMA PRECEDENTE
+   PREVIOUS PROGRAM
    ========================================================= */
 
 function playPreviousProgram(){
 
-  if (!programs.length) return;
+  if (!programs.length) {
+    return;
+  }
+
 
   const previousIndex =
     currentIndex <= 0
       ? programs.length - 1
       : currentIndex - 1;
 
-  setProgram(programs[previousIndex], true);
+
+  setProgram(
+    programs[previousIndex],
+    true
+  );
+
 }
 
+
 /* =========================================================
-   PLAY / PAUSA
+   PLAY BUTTON
    ========================================================= */
 
-els.playBtn.addEventListener('click', () => {
+els.playBtn.addEventListener(
+  'click',
+  () => {
 
-  if (!els.audio.src) return;
+    if (!els.audio.src) {
+      return;
+    }
 
-  if (els.audio.paused) {
 
-    els.audio.play().catch(() => {});
+    if (els.audio.paused) {
 
-  } else {
+      els.audio
+        .play()
+        .catch(() => {});
 
-    els.audio.pause();
+    } else {
+
+      els.audio.pause();
+
+    }
 
   }
+);
 
-});
 
 /* =========================================================
    AUDIO PLAY
    ========================================================= */
 
-els.audio.addEventListener('play', () => {
+els.audio.addEventListener(
+  'play',
+  () => {
 
-  els.playBtn.textContent = '❚❚';
+    els.playBtn.textContent =
+      '❚❚';
 
-  els.card.classList.add('playing');
+    els.card.classList.add(
+      'playing'
+    );
 
-});
+
+    /*
+       Aggiorna lo stato iPhone
+       quando l'audio è realmente partito.
+    */
+
+    if (
+      'mediaSession' in navigator
+    ) {
+
+      try {
+
+        navigator.mediaSession.playbackState =
+          'playing';
+
+        /*
+           Reimposta i metadati del
+           programma attualmente attivo.
+        */
+
+        updateMediaSession(
+          currentProgram
+        );
+
+      } catch(err) {}
+
+    }
+
+  }
+);
+
 
 /* =========================================================
-   AUDIO PAUSA
+   AUDIO PAUSE
    ========================================================= */
 
-els.audio.addEventListener('pause', () => {
+els.audio.addEventListener(
+  'pause',
+  () => {
 
-  els.playBtn.textContent = '▶';
+    els.playBtn.textContent =
+      '▶';
 
-  els.card.classList.remove('playing');
+    els.card.classList.remove(
+      'playing'
+    );
 
-});
+
+    if (
+      'mediaSession' in navigator
+    ) {
+
+      try {
+
+        navigator.mediaSession.playbackState =
+          'paused';
+
+      } catch(err) {}
+
+    }
+
+  }
+);
+
 
 /* =========================================================
-   AUDIO TERMINATO
+   AUDIO ENDED
    ========================================================= */
 
-els.audio.addEventListener('ended', () => {
+els.audio.addEventListener(
+  'ended',
+  () => {
 
-  els.playBtn.textContent = '▶';
+    els.playBtn.textContent =
+      '▶';
 
-  els.card.classList.remove('playing');
+    els.card.classList.remove(
+      'playing'
+    );
 
-  playNextProgram();
 
-});
+    if (
+      'mediaSession' in navigator
+    ) {
+
+      try {
+
+        navigator.mediaSession.playbackState =
+          'none';
+
+      } catch(err) {}
+
+    }
+
+
+    playNextProgram();
+
+  }
+);
+
 
 /* =========================================================
-   METADATI AUDIO
+   LOADED METADATA
    ========================================================= */
 
-els.audio.addEventListener('loadedmetadata', () => {
+els.audio.addEventListener(
+  'loadedmetadata',
+  () => {
 
-  els.duration.textContent =
-    formatTime(els.audio.duration);
+    els.duration.textContent =
+      formatTime(
+        els.audio.duration
+      );
 
-});
+  }
+);
+
 
 /* =========================================================
    TIME UPDATE
    ========================================================= */
 
-els.audio.addEventListener('timeupdate', updateProgress);
+els.audio.addEventListener(
+  'timeupdate',
+  updateProgress
+);
+
 
 /* =========================================================
    SEEK
    ========================================================= */
 
-els.seek.addEventListener('input', () => {
+els.seek.addEventListener(
+  'input',
+  () => {
 
-  if (
-    Number.isFinite(els.audio.duration) &&
-    els.audio.duration > 0
-  ) {
+    if (
+      Number.isFinite(
+        els.audio.duration
+      ) &&
+      els.audio.duration > 0
+    ) {
 
-    els.audio.currentTime =
-      (Number(els.seek.value) / 100) *
-      els.audio.duration;
+      els.audio.currentTime =
+        (
+          Number(
+            els.seek.value
+          ) / 100
+        ) *
+        els.audio.duration;
 
-    updateProgress();
+
+      updateProgress();
+
+    }
 
   }
+);
 
-});
-
-/* =========================================================
-   PULSANTE PRECEDENTE
-   ========================================================= */
-
-els.prevBtn.addEventListener('click', () => {
-
-  els.grid.scrollBy({
-    left: -Math.round(els.grid.clientWidth * 0.75),
-    behavior: 'smooth'
-  });
-
-});
 
 /* =========================================================
-   PULSANTE SUCCESSIVO
+   PREV SCROLL
    ========================================================= */
 
-els.nextBtn.addEventListener('click', () => {
+els.prevBtn.addEventListener(
+  'click',
+  () => {
 
-  els.grid.scrollBy({
-    left: Math.round(els.grid.clientWidth * 0.75),
-    behavior: 'smooth'
-  });
+    els.grid.scrollBy({
 
-});
+      left:
+        -Math.round(
+          els.grid.clientWidth *
+          0.75
+        ),
+
+      behavior:
+        'smooth'
+
+    });
+
+  }
+);
+
+
+/* =========================================================
+   NEXT SCROLL
+   ========================================================= */
+
+els.nextBtn.addEventListener(
+  'click',
+  () => {
+
+    els.grid.scrollBy({
+
+      left:
+        Math.round(
+          els.grid.clientWidth *
+          0.75
+        ),
+
+      behavior:
+        'smooth'
+
+    });
+
+  }
+);
+
 
 /* =========================================================
    LIVE RADIO
    ========================================================= */
 
-els.siteBtn.innerHTML = 'LIVE RADIO';
+els.siteBtn.innerHTML =
+  'LIVE RADIO';
 
-els.siteBtn.addEventListener('click', () => {
 
-  window.open(
-    'https://www.dgtvmusic.com',
-    '_blank'
-  );
+els.siteBtn.addEventListener(
+  'click',
+  () => {
 
-});
+    window.open(
+      'https://www.dgtvmusic.com',
+      '_blank'
+    );
+
+  }
+);
+
 
 /* =========================================================
-   CONDIVIDI
+   SHARE
    ========================================================= */
 
-els.shareBtn.addEventListener('click', () => {
+els.shareBtn.addEventListener(
+  'click',
+  () => {
 
-  window.open(
-    'https://dgtvmusic.github.io/dgtv-player/',
-    '_blank'
-  );
+    window.open(
+      'https://dgtvmusic.github.io/dgtv-player/',
+      '_blank'
+    );
 
-});
+  }
+);
+
 
 /* =========================================================
-   CARICAMENTO PROGRAMMI
+   INIT
    ========================================================= */
 
 async function init(){
@@ -527,6 +1022,7 @@ async function init(){
         }
       );
 
+
     if (!response.ok) {
 
       throw new Error(
@@ -535,12 +1031,23 @@ async function init(){
 
     }
 
-    programs = await response.json();
 
-    renderPrograms(programs);
+    programs =
+      await response.json();
 
-    /* ATTIVA MEDIA SESSION */
+
+    renderPrograms(
+      programs
+    );
+
+
+    /*
+       Attiviamo i controlli
+       della schermata di blocco.
+    */
+
     setupMediaSession();
+
 
     if (programs.length) {
 
@@ -551,22 +1058,33 @@ async function init(){
 
     }
 
-  } catch (err) {
+  } catch(err) {
 
     els.grid.innerHTML = `
+
       <div class="empty-state">
-        Errore nel caricamento dei programmi.
-        Controlla data/programs.json.
+
+        Errore nel caricamento
+        dei programmi.
+        Controlla
+        data/programs.json.
+
       </div>
+
     `;
 
-    console.error(err);
+
+    console.error(
+      err
+    );
 
   }
 
 }
 
+
 init();
+
 
 /* =========================================================
    RIMOZIONE ETICHETTA DG TV
@@ -583,8 +1101,12 @@ function removeDgtvLabel(){
       const txt =
         (el.textContent || '')
           .trim()
-          .replace(/\s+/g, ' ')
+          .replace(
+            /\s+/g,
+            ' '
+          )
           .toUpperCase();
+
 
       if (
         !txt ||
@@ -599,19 +1121,27 @@ function removeDgtvLabel(){
 
     });
 
+
   document
-    .querySelectorAll('body *')
+    .querySelectorAll(
+      'body *'
+    )
     .forEach(el => {
 
       const txt =
         (el.textContent || '')
           .trim()
-          .replace(/\s+/g, ' ')
+          .replace(
+            /\s+/g,
+            ' '
+          )
           .toUpperCase();
+
 
       const hasChildren =
         el.children &&
         el.children.length > 0;
+
 
       if (
         !hasChildren &&
@@ -630,22 +1160,27 @@ function removeDgtvLabel(){
 
 }
 
+
 removeDgtvLabel();
+
 
 window.addEventListener(
   'load',
   removeDgtvLabel
 );
 
+
 setInterval(
   removeDgtvLabel,
   500
 );
 
+
 const dgtvLabelObserver =
   new MutationObserver(
     removeDgtvLabel
   );
+
 
 dgtvLabelObserver.observe(
   document.body,
